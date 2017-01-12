@@ -4,14 +4,16 @@
 ;; inference rules for propositional calculus
 
 (load "parser.lisp")
+(load "operators.lisp")
 
 (defun modus-ponens (exp)
   "Modus Ponens inference rule ::
   (^ (=> p q) p) => q"
   (if (and (conjunctionp exp)
            (implicationp (first-operand exp))
-           (eq (cadadr exp) (caddr exp)))
-      (caddr (cadr exp))
+           (eq (first-operand (first-operand exp))
+               (second-operand exp)))
+      (second-operand (first-operand exp))
       exp))
 
 (defun modus-tollens (exp)
@@ -19,19 +21,19 @@
    (^ (=> p q) (~ p)) => (~ q)"
   (if (and (conjunctionp exp)
            (implicationp (first-operand exp))
-           (or (equalp (list '~ (cadadr exp))
-                       (caddr exp))
-               (equalp (cadadr exp)
-                       (list '~ (caddr exp)))))
-      (list '~ (caddr (cadr exp)))
+           (or (equalp (make-negation (first-operand (first-operand exp)))
+                       (second-operand exp))
+               (equalp (first-operand (first-operand exp))
+                       (make-negation (second-operand exp)))))
+      (make-negation (second-operand (first-operand exp)))
       exp))
 
 (defun syllogism-disjunctive (exp)
   "Syllogism Disjunctive inference rule ::
    (^ (v p q) (~ p)) => q"
   (if (and (conjunctionp exp)
-           (disjunctionp (cadr exp))
-           (negationp (caddr exp))
+           (disjunctionp (first-operand exp))
+           (negationp (second-operand exp))
            (find-if #'(lambda (x)
                         (equalp x (first-operand (second-operand exp))))
                     (operands (first-operand exp))))
@@ -43,12 +45,12 @@
 (defun addiction (exp p)
   "Addiction in inference rule ::
    p => (v p q)"
-  (list 'v exp p))
+  (make-disjunction exp p))
 
 (defun conjunction (exp p)
   "Conjunction inference rule ::
    p => (^ p q)"
-  (list '^ exp p))
+  (make-conjunction exp p))
 
 (defun simplification-generic (exp operand)
   "When exp is a conjunction select operand
@@ -94,8 +96,6 @@
   "Absorption inference rule ::
   (=> p q) => (=> p (^ p q))"
   (if (implicationp exp)
-      (list '=>
-            (first-operand exp)
-            (list '^
-                  (first-operand exp)
-                  (second-operand exp)))))
+      (make-implication (first-operand exp)
+                        (make-conjunction (first-operand exp)
+                                          (second-operand exp)))))
