@@ -24,3 +24,19 @@
 
 
 
+;; symbolic construction
+
+(defun make-conjunction (p q)
+  (list '^ p q))
+
+(defun make-negation (p)
+  (list '~ p))
+
+(defun make-disjunction (p q)
+  (list 'v p q))
+
+(defun make-implication (p q)
+  (list '=> p q))
+
+(defun make-biconditional (p q)
+  (list '<=> p q))
