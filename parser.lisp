@@ -15,6 +15,7 @@
 (setf (symbol-function 'operator) #'car)
 (setf (symbol-function 'operands) #'cdr)
 
+(defparameter *valid-operators* '(~ ^ <=> => v))
 
 ;; operation checkers
 (defun operationp (exp op)
@@ -22,13 +23,20 @@
    can be a operation of 'op"
   (eq (operator exp) op))
 
+(defun valid-operatorp (op)
+  (if (find op *valid-operators*)
+      t
+      nil))
+
 (defun unary-operationp (exp)
-  (and (not (atom exp))
-       (= (length (operands exp)) 1)))
+  (and (listp exp)
+       (= (length (operands exp)) 1)
+       (valid-operatorp (operator exp))))
 
 (defun binary-operationp (exp)
-  (and (not (atom exp))
-       (= (length (operands exp)) 2)))
+  (and (listp exp)
+       (= (length (operands exp)) 2)
+       (valid-operatorp (operator exp))))
 
 (defun negationp (exp)
   "Verify if the expression is a negation"
@@ -54,3 +62,32 @@
   "Verify if the expression is a biconditional"
   (and (binary-operationp exp)
        (operationp exp '<=>)))
+
+(defun swap-operand-operator (exp)
+  (if (and (listp exp)
+           (binary-operationp exp))
+      (list (first-operand exp) (operator exp) (second-operand exp))
+      exp))
+
+(defun nested-listp (exp)
+  (if (null exp)
+      nil
+      (or (listp (car exp))
+          (nested-listp (cdr exp)))))
+
+(defun prefix-to-infix (exp)
+  (cond ((atom exp) exp)
+        ((and (nested-listp exp)
+              (not (unary-operationp exp)))
+         (let ((op (operator exp))
+               (a (first-operand exp))
+               (b (second-operand exp)))
+            (list (prefix-to-infix a)
+                  op
+                  (prefix-to-infix b))))
+        ((and (nested-listp exp)
+              (unary-operationp exp))
+         (let ((op (operator exp))
+               (a (first-operand exp)))
+           (list op (prefix-to-infix a))))
+        (t (swap-operand-operator exp))))
