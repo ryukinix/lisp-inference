@@ -17,8 +17,7 @@
 (defun clean-double-negations (exp)
   "Search in the expression's tree for double-negations and apply
    the equivalence of double-negation to simplify it."
-  (if (and (listp exp)
-           (find-if #'listp exp))
+  (if (nested-listp exp)
       (let ((head (car exp))
             (tail (cdr exp)))
         (when (listp head)
