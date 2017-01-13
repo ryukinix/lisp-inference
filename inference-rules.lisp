@@ -76,8 +76,8 @@
   (^ (=> x y) (=> y z)) => (=> x z)
   (^ (=> y z) (=> x y)) => (=> x z)"
   (if (and (conjunctionp exp)
-           (implicationp (cadr exp))
-           (implicationp (caddr exp))
+           (implicationp (first-operand exp))
+           (implicationp (second-operand exp))
            (or (equalp (second-of-first-operand exp)
                        (first-of-second-operand exp))
                (equalp (first-of-first-operand exp)
