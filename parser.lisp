@@ -33,24 +33,14 @@
        (= (length (operands exp)) 1)
        (valid-operatorp (operator exp))))
 
+(defun binary-operationp (exp)
+  (and (listp exp)
+       (= (length (operands exp)) 2)
+       (valid-operatorp (operator exp))))
+
 (defun valid-operationp (exp)
   (or (unary-operationp exp)
       (binary-operationp exp)))
-
-(defun binary-operationp (exp)
-  (and (listp exp)
-       (= (length (operands exp)) 2)
-       (valid-operatorp (operator exp))))
-
-(defun unary-operationp (exp)
-  (and (listp exp)
-       (= (length (operands exp)) 1)
-       (valid-operatorp (operator exp))))
-
-(defun binary-operationp (exp)
-  (and (listp exp)
-       (= (length (operands exp)) 2)
-       (valid-operatorp (operator exp))))
 
 (defun negationp (exp)
   "Verify if the expression is a negation"
