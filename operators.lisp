@@ -16,7 +16,7 @@
 
 (defun => (p q)
   "Implication binary operator"
-  (v p (~ q)))
+  (v (~ p) q))
 
 (defun <=> (p q)
   "Biconditional binary operator"
