@@ -33,6 +33,10 @@
        (= (length (operands exp)) 1)
        (valid-operatorp (operator exp))))
 
+(defun valid-operationp (exp)
+  (or (unary-operationp exp)
+      (binary-operationp exp)))
+
 (defun binary-operationp (exp)
   (and (listp exp)
        (= (length (operands exp)) 2)
