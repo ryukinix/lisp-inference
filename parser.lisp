@@ -28,6 +28,10 @@
       t
       nil))
 
+(defun valid-operationp (exp)
+  (or (unary-operationp exp)
+      (binary-operationp exp)))
+
 (defun unary-operationp (exp)
   (and (listp exp)
        (= (length (operands exp)) 1)
@@ -70,10 +74,8 @@
       exp))
 
 (defun nested-listp (exp)
-  (if (null exp)
-      nil
-      (or (listp (car exp))
-          (nested-listp (cdr exp)))))
+  (and (not (atom exp))
+       (some #'listp exp)))
 
 (defun prefix-to-infix (exp)
   (cond ((atom exp) exp)
@@ -89,5 +91,5 @@
               (unary-operationp exp))
          (let ((op (operator exp))
                (a (first-operand exp)))
-           (list op (prefix-to-infix a))))
+           (cons op (list (prefix-to-infix a)))))
         (t (swap-operand-operator exp))))
