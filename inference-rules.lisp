@@ -11,9 +11,9 @@
   (^ (=> p q) p) => q"
   (if (and (conjunctionp exp)
            (implicationp (first-operand exp))
-           (eq (first-operand (first-operand exp))
+           (eq (first-of-first-operand exp )
                (second-operand exp)))
-      (second-operand (first-operand exp))
+      (second-of-first-operand exp)
       exp))
 
 (defun modus-tollens (exp)
@@ -21,9 +21,9 @@
    (^ (=> p q) (~ p)) => (~ q)"
   (if (and (conjunctionp exp)
            (implicationp (first-operand exp))
-           (or (equalp (make-negation (first-operand (first-operand exp)))
+           (or (equalp (make-negation (first-of-first-operand exp))
                        (second-operand exp))
-               (equalp (first-operand (first-operand exp))
+               (equalp (first-of-first-operand exp)
                        (make-negation (second-operand exp)))))
       (make-negation (second-operand (first-operand exp)))
       exp))
@@ -35,10 +35,10 @@
            (disjunctionp (first-operand exp))
            (negationp (second-operand exp))
            (find-if #'(lambda (x)
-                        (equalp x (first-operand (second-operand exp))))
+                        (equalp x (first-of-first-operand exp)))
                     (operands (first-operand exp))))
       (car (remove-if #'(lambda (x)
-                          (equalp x (first-operand (second-operand exp))))
+                          (equalp x (first-of-second-operand exp)))
                       (operands (first-operand exp))))
       exp))
 
@@ -78,18 +78,18 @@
   (if (and (conjunctionp exp)
            (implicationp (cadr exp))
            (implicationp (caddr exp))
-           (or (equalp (second-operand (first-operand exp))
-                       (first-operand (second-operand exp)))
-               (equalp (first-operand (first-operand exp))
-                       (second-operand (second-operand exp)))))
-      (if (equalp (second-operand (first-operand exp))
-                  (first-operand (second-operand exp)))
-          (list '=>
-                (first-operand (first-operand exp))
-                (second-operand (second-operand exp)))
-          (list '=>
-                (first-operand (second-operand exp))
-                (second-operand (first-operand exp))))
+           (or (equalp (second-of-first-operand exp)
+                       (first-of-second-operand exp))
+               (equalp (first-of-first-operand exp)
+                       (second-of-second-operand exp))))
+      (if (equalp (second-of-first-operand exp)
+                  (first-of-second-operand exp))
+          (make-implication
+                (first-of-first-operand exp)
+                (second-of-second-operand exp))
+          (make-implication
+                (first-of-second-operand exp)
+                (second-of-first-operand exp)))
       exp))
 
 (defun absorption (exp)

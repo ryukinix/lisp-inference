@@ -10,8 +10,8 @@
   "Double negation equivalence rule ::
    (~ (~ p)) <=> p"
   (if (and (negationp exp)
-           (negationp (cadr exp)))
-      (cadadr exp)
+           (negationp (first-operand exp)))
+      (first-of-first-operand exp)
       exp))
 
 (defun clean-double-negations (exp)
@@ -37,13 +37,13 @@
    (cond ((and (negationp exp) ;; (~ (^ p q)) <=> (v (~ p) (~ q))
                (conjunctionp (first-operand exp)))
           (make-disjunction
-           (make-negation (first-operand (first-operand exp)))
-           (make-negation (second-operand (first-operand exp)))))
+           (make-negation (first-of-first-operand exp))
+           (make-negation (second-of-first-operand exp))))
          ((and (negationp exp) ;; (~ (v p q)) <=> (^ (~ p) (~ q))
                (disjunctionp (first-operand exp)))
           (make-conjunction
-           (make-negation (first-operand (first-operand exp)))
-           (make-negation (second-operand (first-operand exp)))))
+           (make-negation (first-of-first-operand exp))
+           (make-negation (second-of-first-operand exp))))
          ((conjunctionp exp) ;; (^ p q) <=> (~ (v (~ p) (~ q)))
           (make-negation (make-disjunction (make-negation (first-operand exp))
                                            (make-negation (second-operand exp)))))
