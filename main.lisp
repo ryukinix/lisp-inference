@@ -29,7 +29,7 @@
          (after (prefix-to-infix result)))
     (when (null (cdr before))
       (setq before (prefix-to-infix (car before))))
-    (format t "~s :: ~s ~s ~s ~c" function before symbol after #\newline)))
+    (format t "~a :: ~a ~a ~a ~c" function before symbol after #\newline)))
 
 (defun tests-run (tests symbol)
   (mapcar #'(lambda (x) (pretty-test-eval x symbol))
