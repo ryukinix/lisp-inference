@@ -11,21 +11,16 @@
   (and (atom symbol)
        (not (valid-operatorp symbol))))
 
-(defun set-of-propositions (exp &optional (propositions nil))
+(defun set-of-propositions (exp)
   "Given a propositional expression return the list of
    propositions used in that expression.
    Ex.: (set-of-propositions '(=> (p q) r)) => '(p q r)"
-  (when (and (not (null exp))
-             (listp exp))
-    (let ((head (car exp))
-          (tail (cdr exp)))
-      (if (listp head)
-          (setf propositions (set-of-propositions head propositions))
-          (when (and (propositionp head)
-                     (not (find head propositions)))
-            (push head propositions)))
-      (setf propositions (set-of-propositions tail propositions))))
-  propositions)
+  (labels ((flatten (tree)
+             (if (atom tree)
+                 (list tree)
+                 (loop for a in tree
+                       appending (flatten a)))))
+          (remove-if-not #'propositionp (remove-duplicates (flatten exp)))))
 
 (defun get-ordered-propositions (exp)
   (sort (set-of-propositions exp) #'string<))
@@ -141,13 +136,16 @@
                      (princ #\newline)))
     (princ #\newline)))
 
-(print-truth-table '(=> (v p (~ q)) (=> p q)))
-(print-truth-table '(^ p q))
-(print-truth-table '(v p q))
-(print-truth-table '(=> p q))
-(print-truth-table '(<=> p q))
-(print-truth-table `(<=> (^ p q) ,(de-morgan '(^ p q))))
 
+(defun main-truth-table ()
+  (print-truth-table '(=> (v p (~ q)) (=> p q)))
+  (print-truth-table '(^ p q))
+  (print-truth-table '(v p q))
+  (print-truth-table '(=> p q))
+  (print-truth-table '(<=> p q))
+  (print-truth-table `(<=> (^ p q) ,(de-morgan '(^ p q)))))
+
+(main-truth-table)
 #| set of manual tests (only for debug)
 (eval-operations '(~ p))
 (prepare-table (eval-operations '(^ p (v r s))))
