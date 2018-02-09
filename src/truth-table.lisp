@@ -90,8 +90,11 @@
                (eval exp)))
       (let ((exps (stack-of-expressions exp-tree)))
         (loop for case in cases
-              collect (append case (loop for exp in exps
-                                         collect (list exp (eval-expression (copy-tree exp) case)))))))))
+              collect (append case
+                              (loop for exp in exps
+                                    collect (list exp
+                                                  (eval-expression (copy-tree exp)
+                                                                   case)))))))))
 
 
 (defun pretty-values (v)
@@ -100,10 +103,12 @@
       "F"))
 
 (defun prepare-table (evaluated-cases)
-  (let ((header (loop for x in (car evaluated-cases) collect (prefix-to-infix (car x)))))
+  (let ((header (loop for x in (car evaluated-cases)
+                      collect (prefix-to-infix (car x)))))
     (loop for n-exp from 0 below (length header)
-          collect (cons (nth n-exp header) (loop for case in evaluated-cases
-                                                 collect (pretty-values (cadr (nth n-exp case))))))))
+          collect (cons (nth n-exp header)
+                        (loop for case in evaluated-cases
+                              collect (pretty-values (cadr (nth n-exp case))))))))
 (defun princ-n (string n)
   (dotimes (_ n) (princ string)))
 
@@ -112,9 +117,10 @@
          (truth-table (prepare-table evaluated-cases))
          (header (loop for column in truth-table collect (car column)))
          (n-values (length (cadr truth-table)))
-         (printable-header (loop for x in header collect (concatenate 'string "  " (princ-to-string x) "  |")))
+         (printable-header (loop for x in header
+                                 for p = (princ-to-string x)
+                                 collect (concatenate 'string "  " p "  |")))
          (spaces (mapcar #'length printable-header)))
-     ;; (print spaces)
      (loop for exp in printable-header do (princ exp))
      (princ #\newline)
      (princ-n "-" (reduce #'+ spaces))

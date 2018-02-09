@@ -36,5 +36,5 @@
 (defun tests ()
   (format t "== EQUIVALENCE TESTS == ~c ~c" #\newline #\newline #\newline)
   (tests-run *equivalence-tests* '<=>)
-  (format t "~c ~c == INFERENCE TESTS == ~c ~c" #\newline #\newline #\newline #\newline)
+  (format t "~c ~c == INFERENCE TESTS == ~c ~c" #\newline #\newline #\newline)
   (tests-run *inference-tests* '=>))
