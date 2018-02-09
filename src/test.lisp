@@ -1,9 +1,7 @@
-;; Common Lisp Script
+;; -*- mode: lisp-mode  -*-
 ;; Manoel Vilela
 
-(load "equivalences.lisp")
-(load "inference-rules.lisp")
-
+(in-package :lisp-inference)
 
 (defparameter *equivalence-tests* '((de-morgan (^ p q))
                                     (de-morgan (~ (v p q)))
@@ -35,7 +33,8 @@
   (mapcar #'(lambda (x) (pretty-test-eval x symbol))
           tests))
 
-(format t "== EQUIVALENCE TESTS == ~c ~c" #\newline #\newline #\newline)
-(tests-run *equivalence-tests* '<=>)
-(format t "~c ~c == INFERENCE TESTS == ~c ~c" #\newline #\newline #\newline #\newline)
-(tests-run *inference-tests* '=>)
+(defun tests ()
+  (format t "== EQUIVALENCE TESTS == ~c ~c" #\newline #\newline #\newline)
+  (tests-run *equivalence-tests* '<=>)
+  (format t "~c ~c == INFERENCE TESTS == ~c ~c" #\newline #\newline #\newline #\newline)
+  (tests-run *inference-tests* '=>))

@@ -1,10 +1,10 @@
-;; Common Lisp Script
+;; -*- mode: lisp-mode  -*-
 ;; Manoel Vilela
 
 ;; inference rules for propositional calculus
 
-(load "parser.lisp")
-(load "operators.lisp")
+(in-package :lisp-inference)
+
 
 (defun modus-ponens (exp)
   "Modus Ponens inference rule ::
@@ -33,7 +33,7 @@
    (^ (v p q) (~ p)) => q"
   (if (and (conjunctionp exp)
            (disjunctionp (first-operand exp))
-           (negationp (second-operand exp))
+            (negationp (second-operand exp))
            (find-if #'(lambda (x)
                         (equalp x (first-of-first-operand exp)))
                     (operands (first-operand exp))))

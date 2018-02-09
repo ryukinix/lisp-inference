@@ -1,10 +1,9 @@
-;; Common Lisp Script
+;; -*- mode: lisp-mode  -*-
 ;; Manoel Vilela
 
 ;; set of equivalences transform for propositional calculus
 
-(load "parser.lisp")
-(load "operators.lisp")
+(in-package :lisp-inference)
 
 (defun double-negation (exp)
   "Double negation equivalence rule ::

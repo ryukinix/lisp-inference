@@ -1,5 +1,7 @@
-;; Common Lisp Script
+;; -*- mode: lisp-mode  -*-
 ;; Manoel Vilela
+
+(in-package :lisp-inference)
 
 ;; selectors
 (setf (symbol-function 'first-operand) #'cadr)

@@ -1,5 +1,8 @@
-;; Common Lisp Script
+;; -*- mode: lisp-mode  -*-
 ;; Manoel Vilela
+
+
+(in-package :lisp-inference)
 
 ;; operators
 (defun ~ (p)
@@ -25,7 +28,6 @@
 
 
 ;; symbolic construction
-
 (defun make-conjunction (p q)
   (list '^ p q))
 

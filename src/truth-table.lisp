@@ -1,10 +1,7 @@
-;; Common Lisp Script
+;; -*- mode: lisp-mode  -*-
 ;; Manoel Vilela
 
-(load "parser.lisp")
-(load "operators.lisp")
-(load "equivalences.lisp")
-
+(in-package :lisp-inference)
 
 (defun propositionp (symbol)
   "Check if the given symbol can be a proposition (letters)"
@@ -137,7 +134,7 @@
     (princ #\newline)))
 
 
-(defun main-truth-table ()
+(defun main ()
   (print-truth-table '(=> (v p (~ q)) (=> p q)))
   (print-truth-table '(^ p q))
   (print-truth-table '(v p q))
@@ -145,7 +142,6 @@
   (print-truth-table '(<=> p q))
   (print-truth-table `(<=> (^ p q) ,(de-morgan '(^ p q)))))
 
-(main-truth-table)
 #| set of manual tests (only for debug)
 (eval-operations '(~ p))
 (prepare-table (eval-operations '(^ p (v r s))))
