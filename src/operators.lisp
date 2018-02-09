@@ -4,6 +4,11 @@
 
 (in-package :lisp-inference)
 
+(eval-when (:compile-toplevel)
+  (defconstant F nil))
+
+(defparameter *valid-operators* '(~ ^ <=> => v [+]))
+
 ;; operators
 (defun ~ (p)
   "Not unary operator"
@@ -25,6 +30,10 @@
   "Biconditional binary operator"
   (^ (=> p q) (=> q p)))
 
+(defun [+] (p q)
+  "XOR operator or exclusive disjunction operator"
+  (^ (~ (^ p q))
+     (v p q)))
 
 
 ;; symbolic construction
@@ -42,3 +51,6 @@
 
 (defun make-biconditional (p q)
   (list '<=> p q))
+
+(defun make-xor (p q)
+  (list '[x] p q))

@@ -34,6 +34,7 @@
    :v
    :=>
    :<=>
+   :[+]
    :make-conjunction
    :make-negation
    :make-disjunction

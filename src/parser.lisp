@@ -17,8 +17,6 @@
 (setf (symbol-function 'operator) #'car)
 (setf (symbol-function 'operands) #'cdr)
 
-(defparameter *valid-operators* '(~ ^ <=> => v))
-
 ;; operation checkers
 (defun operationp (exp op)
   "Based a 'op that can be a symbol, verify if the list
