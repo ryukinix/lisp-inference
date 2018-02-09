@@ -39,4 +39,5 @@
    :make-disjunction
    :make-implication
    :make-biconditional
-   :*valid-operators*))
+   :*valid-operators*)
+  (:nicknames "INFERENCE"))
