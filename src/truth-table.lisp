@@ -112,7 +112,7 @@
          (truth-table (prepare-table evaluated-cases))
          (header (loop for column in truth-table collect (car column)))
          (n-values (length (cadr truth-table)))
-         (printable-header (loop for x in header collect (concatenate 'string "  " (write-to-string x) "  |")))
+         (printable-header (loop for x in header collect (concatenate 'string "  " (princ-to-string x) "  |")))
          (spaces (mapcar #'length printable-header)))
      ;; (print spaces)
      (loop for exp in printable-header do (princ exp))
