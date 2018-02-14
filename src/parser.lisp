@@ -5,18 +5,33 @@
 (in-package :lisp-inference)
 
 ;; selectors
-(setf (symbol-function 'first-operand) #'cadr)
-(setf (symbol-function 'second-operand) #'caddr)
-(setf (symbol-function 'first-of-first-operand) #'(lambda (x) (first-operand
-                                                          (first-operand x))))
-(setf (symbol-function 'first-of-second-operand) #'(lambda (x) (first-operand
-                                                           (second-operand x))))
-(setf (symbol-function 'second-of-second-operand) #'(lambda (x) (second-operand
-                                                            (second-operand x))))
-(setf (symbol-function 'second-of-first-operand) #'(lambda (x) (second-operand
-                                                           (first-operand x))))
-(setf (symbol-function 'operator) #'car)
-(setf (symbol-function 'operands) #'cdr)
+(defun first-operand (x)
+  (cadr x))
+
+(defun second-operand (x)
+  (caddr x))
+
+(defun first-of-first-operand (x)
+  (first-operand
+   (first-operand x)))
+
+(defun first-of-second-operand (x)
+  (first-operand
+   (second-operand x)))
+
+(defun second-of-second-operand (x)
+  (second-operand
+   (second-operand x)))
+
+(defun second-of-first-operand (x)
+  (second-operand
+   (first-operand x)))
+
+(defun operator (x)
+  (car x))
+
+(defun operands (x)
+  (cdr x))
 
 ;; operation checkers
 (defun operationp (exp op)
