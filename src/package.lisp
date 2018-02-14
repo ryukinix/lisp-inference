@@ -1,3 +1,6 @@
+;; -*- mode: lisp  -*-
+;; Manoel Vilela
+
 ;;;; package.lisp
 
 (defpackage #:lisp-inference

@@ -1,3 +1,6 @@
+;; -*- mode: lisp  -*-
+;; Manoel Vilela
+
 ;;;; lisp-inference.asd
 
 (asdf:defsystem #:lisp-inference

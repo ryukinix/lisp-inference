@@ -1,4 +1,4 @@
-;; -*- mode: lisp-mode  -*-
+;; -*- mode: lisp  -*-
 ;; Manoel Vilela
 
 ;; set of equivalences transform for propositional calculus

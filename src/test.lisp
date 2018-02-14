@@ -1,4 +1,4 @@
-;; -*- mode: lisp-mode  -*-
+;; -*- mode: lisp  -*-
 ;; Manoel Vilela
 
 (in-package :lisp-inference)
