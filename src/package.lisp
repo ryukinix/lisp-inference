@@ -31,6 +31,7 @@
    :biconditionalp
    :prefix-to-infix
    :print-truth-table
+   :truth
    :main
    :~
    :^
