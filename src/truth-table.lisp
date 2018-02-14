@@ -139,6 +139,8 @@
                      (princ #\newline)))
     (princ #\newline)))
 
+(defmacro truth (exp)
+  `(print-truth-table (quote ,exp)))
 
 (defun main ()
   (print-truth-table '(=> (v p (~ q)) (=> p q)))
