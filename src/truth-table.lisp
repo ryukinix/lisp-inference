@@ -4,12 +4,12 @@
 (in-package :lisp-inference)
 
 (defun propositionp (symbol)
-  "Check if the given symbol can be a proposition (letters)"
+  "Check if the given SYMBOL can be a proposition (letters)"
   (and (atom symbol)
        (not (valid-operatorp symbol))))
 
 (defun set-of-propositions (exp)
-  "Given a propositional expression return the list of
+  "Given a propositional expression EXP return the list of
    propositions used in that expression.
    Ex.: (set-of-propositions '(=> (p q) r)) => '(p q r)"
   (labels ((flatten (tree)
@@ -20,6 +20,7 @@
           (remove-if-not #'propositionp (remove-duplicates (flatten exp)))))
 
 (defun get-ordered-propositions (exp)
+  "Get the set of propositions in lexicographical order of EXP"
   (sort (set-of-propositions exp) #'string<))
 
 (defun list-of-bits (integer)
@@ -33,7 +34,8 @@
 
 
 (defun cases-to-eval (n-propositions)
-  "Based a number of propositions get the cases for each proposition"
+  "Based a number of propositions get the cases for each proposition
+   N-PROPOSITIONS is a number."
   (let ((n-cases (1- (expt 2 n-propositions))))
     (labels ((complete-with-zeros (case)
                (if (>= (length case) (integer-length n-cases))
@@ -54,9 +56,11 @@
 
 ;; helpers functions
 (defun only-leafp (sub-tree)
+  "Check if the tree only have leaves"
   (not (nested-listp sub-tree)))
 
 (defun has-suboperations (sub-tree)
+  "Check if the tree SUB-TREE has operations in it"
   (nested-listp sub-tree))
 
 ;; Although the above functions is only used on stack-of-expressions
@@ -64,6 +68,8 @@
 
 ;; RECURSIVE BOMB, BE CAREFUL
 (defun stack-of-expressions (exp)
+  "Based on propositional EXP generate a stack of expressions
+   to be evaluated on truth-table generation"
   (cond ((and (valid-operationp exp)
               (only-leafp exp)) (list exp))
         ((has-suboperations exp)
@@ -81,6 +87,7 @@
 
 
 (defun eval-operations (exp-tree)
+  "Generate all the truth-table cases and evaluated it based on EXP-TREE"
   (let ((cases (group-cases-to-propositions exp-tree)))
     (labels ((eval-expression (exp case)
                (loop for pair in case do
@@ -103,6 +110,9 @@
       "F"))
 
 (defun prepare-table (evaluated-cases)
+  "Get the evaluated cases after EVAL-OPERATIONS
+   and generate a list with CAR being the proposition
+   and CDR the cases evaluated."
   (let ((header (loop for x in (car evaluated-cases)
                       collect (prefix-to-infix (car x)))))
     (loop for n-exp from 0 below (length header)
@@ -110,9 +120,12 @@
                         (loop for case in evaluated-cases
                               collect (pretty-values (cadr (nth n-exp case))))))))
 (defun princ-n (string n)
+  "Just print the STRING by N times"
   (dotimes (_ n) (princ string)))
 
 (defun print-truth-table (exp)
+  "Given a EXP with prefixed notation generate
+   a pretty truth-table for each grouped case."
   (let* ((evaluated-cases (eval-operations exp))
          (truth-table (prepare-table evaluated-cases))
          (header (loop for column in truth-table collect (car column)))
@@ -139,15 +152,21 @@
                      (princ #\newline)))
     (princ #\newline)))
 
+(defun intern-symbol (s)
+  "Get a internal symbol reference of S"
+  (intern (symbol-name s) :lisp-inference))
+
+
 (defmacro truth (exp)
+  "A easy way to generate a truth table"
   `(print-truth-table (quote ,exp)))
 
 (defun main ()
-  (print-truth-table '(=> (v p (~ q)) (=> p q)))
-  (print-truth-table '(^ p q))
-  (print-truth-table '(v p q))
-  (print-truth-table '(=> p q))
-  (print-truth-table '(<=> p q))
+  (truth (=> (v p (~ q)) (=> p q)))
+  (truth (^ p q))
+  (truth (v p q))
+  (truth (=> p q))
+  (truth (<=> p q))
   (print-truth-table `(<=> (^ p q) ,(de-morgan '(^ p q)))))
 
 #| set of manual tests (only for debug)
