@@ -134,7 +134,11 @@
 (defun princ-n (string n)
   "Just print the STRING by N times"
   (dotimes (_ n) (princ string)))
-
+(defun print-bar (spaces)
+  (princ "+")
+  (princ-n "-" (1- (reduce #'+ spaces)))
+  (princ "+")
+  (princ #\newline))
 
 (defun print-truth-table (exp)
   "Given a EXP with prefixed notation generate
@@ -147,30 +151,35 @@
                                  for p = (princ-to-string x)
                                  collect (concatenate 'string "  " p "  |")))
          (spaces (mapcar #'length printable-header)))
-    (princ-n "-" (reduce #'+ spaces))
-    (princ #\newline)
+    (print-bar spaces)
+    (princ "|")
     (loop for exp in printable-header do (princ exp))
     (princ #\newline)
-    (princ-n "-" (reduce #'+ spaces))
-    (princ #\newline)
+    (print-bar spaces)
     (loop for n-value from 1 below n-values
-          do (progn (loop for n-exp from 0 below (length header)
-                          do (let* ((space (nth n-exp spaces))
-                                    (half-space (floor (- space 2) 2))
-                                    (val (nth n-value (nth n-exp truth-table))))
-                               (princ-n " " half-space)
-                               (princ val)
-                               (princ-n " " half-space)
-                               (if (oddp space)
-                                   (princ " |")
-                                   (princ "|"))))
-                    (princ #\newline)))
-    (princ-n "-" (reduce #'+ spaces))
-    (princ #\newline)))
+          do (progn
+               (princ "|")
+               (loop for n-exp from 0 below (length header)
+                     do (let* ((space (nth n-exp spaces))
+                               (half-space (floor (- space 2) 2))
+                               (val (nth n-value (nth n-exp truth-table))))
+                          (princ-n " " half-space)
+                          (princ val)
+                          (princ-n " " half-space)
+                          (if (oddp space)
+                              (princ " |")
+                              (princ "|"))))
+               (princ #\newline)))
+    (print-bar spaces)))
 
 (defmacro truth (exp)
   "A easy way to generate a truth table"
   `(print-truth-table (quote ,exp)))
+
+(defmacro truth-infix (exp)
+  "A easy and infix way of EXP generate a truth table.
+   Ex.: (truth-infix (p ^ q)) "
+  `(print-truth-table (infix-to-prefix (quote , exp))))
 
 (defun main ()
   (truth (=> (v p (~ q)) (=> p q)))

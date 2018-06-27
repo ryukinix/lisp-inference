@@ -109,3 +109,11 @@
                (a (first-operand exp)))
            (cons op (list (prefix-to-infix a)))))
         (t (swap-operand-operator exp))))
+
+
+(defun infix-to-prefix (exp)
+    (cond ((atom exp) exp)
+          ((null (cdr exp)) (infix-to-prefix (car exp)))
+          (t (list (cadr exp)
+                   (infix-to-prefix (car exp))
+                   (infix-to-prefix (cddr exp))))))

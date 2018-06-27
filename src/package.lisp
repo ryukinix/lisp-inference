@@ -32,6 +32,7 @@
    :prefix-to-infix
    :print-truth-table
    :truth
+   :truth-infix
    :lookup-internal-operators
    :intern-symbol
    :main
