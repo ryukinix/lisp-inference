@@ -153,8 +153,9 @@
          (spaces (mapcar #'length printable-header)))
     (print-bar spaces)
     (princ "|")
-    (loop for exp in printable-header do (princ exp))
-    (princ #\newline)
+    (loop for exp in printable-header
+          do (princ exp)
+          finally (princ #\newline))
     (print-bar spaces)
     (loop for n-value from 1 below n-values
           do (progn
@@ -182,23 +183,14 @@
   `(print-truth-table (infix-to-prefix (quote , exp))))
 
 (defun main ()
-  (truth (=> (v p (~ q)) (=> p q)))
-  (truth (^ p q))
-  (truth (v p q))
-  (truth (=> p q))
-  (truth (<=> p q))
-  (print-truth-table `(<=> (^ p q) ,(de-morgan '(^ p q)))))
+  (format t "Example of usage: (^ p q)~%Operators: ~a ~%" *valid-operators*)
+  (handler-case (loop do (princ "TRUTH-TABLE> ")
+                      do (force-output)
+                      do (print-truth-table (read)))
+    (end-of-file () (sb-ext:exit))))
 
-#| set of manual tests (only for debug)
-(eval-operations '(~ p))
-(prepare-table (eval-operations '(^ p (v r s))))
-(cases-to-eval 3)
-
-(stack-of-expressions '(=> (^ p q) (v s (^ s q)))) ;; '((=> (^ p q) (v s r))
-;;   (^ p q)
-;;   (v r s))
-
-(group-cases-to-propositions '(^ (=> p q) r))
-
-(set-of-propositions '(^ (=> p q) r))
-|#
+#+sbcl
+(defun dump-binary ()
+  (sb-ext:save-lisp-and-die "truth-table"
+                            :toplevel #'main
+                            :executable t))

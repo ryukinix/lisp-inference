@@ -38,3 +38,11 @@
   (tests-run *equivalence-tests* '<=>)
   (format t "~c== INFERENCE TESTS == ~c ~c" #\newline #\newline #\newline)
   (tests-run *inference-tests* '=>))
+
+(defun main-test ()
+  (truth (=> (v p (~ q)) (=> p q)))
+  (truth (^ p q))
+  (truth (v p q))
+  (truth (=> p q))
+  (truth (<=> p q))
+  (print-truth-table `(<=> (^ p q) ,(de-morgan '(^ p q)))))

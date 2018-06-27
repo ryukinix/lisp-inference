@@ -4,7 +4,7 @@
 ;;;; package.lisp
 
 (defpackage #:lisp-inference
-  (:use #:cl)
+  (:use #:cl #:cl-user)
   (:export
    :double-negation
    :de-morgan
