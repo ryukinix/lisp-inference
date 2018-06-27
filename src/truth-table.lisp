@@ -17,7 +17,7 @@
                  (list tree)
                  (loop for a in tree
                        appending (flatten a)))))
-          (remove-if-not #'propositionp (remove-duplicates (flatten exp)))))
+    (remove-if-not #'propositionp (remove-duplicates (flatten exp)))))
 
 (defun get-ordered-propositions (exp)
   "Get the set of propositions in lexicographical order of EXP"
@@ -39,9 +39,9 @@
   (let ((n-cases (1- (expt 2 n-propositions))))
     (labels ((complete-with-zeros (case)
                (if (>= (length case) (integer-length n-cases))
-                         case
-                         (complete-with-zeros (cons 0 case))))
-            (prepare-case (case) (mapcar #'zerop (complete-with-zeros case))))
+                   case
+                   (complete-with-zeros (cons 0 case))))
+             (prepare-case (case) (mapcar #'zerop (complete-with-zeros case))))
       (mapcar #'prepare-case (loop for x from 0 to n-cases collect (list-of-bits x))))))
 
 
@@ -50,8 +50,8 @@
          (n-propositions (length propositions))
          (cases (cases-to-eval n-propositions)))
     (loop for case in cases collect
-      (loop for n from 0 below n-propositions collect
-        (list (nth n propositions) (nth n case))))))
+                            (loop for n from 0 below n-propositions collect
+                                                                    (list (nth n propositions) (nth n case))))))
 
 
 ;; helpers functions
@@ -92,8 +92,8 @@
     (labels ((eval-expression (exp case)
                (loop for pair in case do
                  (let ((prop (car pair))
-                        (value (cadr pair)))
-                    (nsubst value prop exp)))
+                       (value (cadr pair)))
+                   (nsubst value prop exp)))
                (eval exp)))
       (let ((exps (stack-of-expressions exp-tree)))
         (loop for case in cases
@@ -119,14 +119,27 @@
           collect (cons (nth n-exp header)
                         (loop for case in evaluated-cases
                               collect (pretty-values (cadr (nth n-exp case))))))))
+
+(defun intern-symbol (s)
+  "Get a internal symbol reference of S"
+  (intern (symbol-name s) :lisp-inference))
+
+(defun lookup-internal-operators (exp)
+  "Ensure that all operators it's inside of :lisp-inference"
+  (loop for op in *valid-operators*
+        for op-name = (intern (symbol-name op))
+        do (nsubst (intern-symbol op-name) op-name exp)
+        finally (return exp)))
+
 (defun princ-n (string n)
   "Just print the STRING by N times"
   (dotimes (_ n) (princ string)))
 
+
 (defun print-truth-table (exp)
   "Given a EXP with prefixed notation generate
    a pretty truth-table for each grouped case."
-  (let* ((evaluated-cases (eval-operations exp))
+  (let* ((evaluated-cases (eval-operations (lookup-internal-operators exp)))
          (truth-table (prepare-table evaluated-cases))
          (header (loop for column in truth-table collect (car column)))
          (n-values (length (cadr truth-table)))
@@ -134,28 +147,26 @@
                                  for p = (princ-to-string x)
                                  collect (concatenate 'string "  " p "  |")))
          (spaces (mapcar #'length printable-header)))
-     (loop for exp in printable-header do (princ exp))
-     (princ #\newline)
-     (princ-n "-" (reduce #'+ spaces))
-     (princ #\newline)
-     (loop for n-value from 1 below n-values
-           do (progn (loop for n-exp from 0 below (length header)
-                           do (let* ((space (nth n-exp spaces))
-                                     (half-space (floor (- space 2) 2))
-                                     (val (nth n-value (nth n-exp truth-table))))
-                                (princ-n " " half-space)
-                                (princ val)
-                                (princ-n " " half-space)
-                                (if (oddp space)
-                                    (princ " |")
-                                    (princ "|"))))
-                     (princ #\newline)))
+    (princ-n "-" (reduce #'+ spaces))
+    (princ #\newline)
+    (loop for exp in printable-header do (princ exp))
+    (princ #\newline)
+    (princ-n "-" (reduce #'+ spaces))
+    (princ #\newline)
+    (loop for n-value from 1 below n-values
+          do (progn (loop for n-exp from 0 below (length header)
+                          do (let* ((space (nth n-exp spaces))
+                                    (half-space (floor (- space 2) 2))
+                                    (val (nth n-value (nth n-exp truth-table))))
+                               (princ-n " " half-space)
+                               (princ val)
+                               (princ-n " " half-space)
+                               (if (oddp space)
+                                   (princ " |")
+                                   (princ "|"))))
+                    (princ #\newline)))
+    (princ-n "-" (reduce #'+ spaces))
     (princ #\newline)))
-
-(defun intern-symbol (s)
-  "Get a internal symbol reference of S"
-  (intern (symbol-name s) :lisp-inference))
-
 
 (defmacro truth (exp)
   "A easy way to generate a truth table"
@@ -175,8 +186,8 @@
 (cases-to-eval 3)
 
 (stack-of-expressions '(=> (^ p q) (v s (^ s q)))) ;; '((=> (^ p q) (v s r))
-                                                   ;;   (^ p q)
-                                                   ;;   (v r s))
+;;   (^ p q)
+;;   (v r s))
 
 (group-cases-to-propositions '(^ (=> p q) r))
 
