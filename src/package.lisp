@@ -32,6 +32,8 @@
    :prefix-to-infix
    :print-truth-table
    :truth
+   :lookup-internal-operators
+   :intern-symbol
    :main
    :~
    :^
