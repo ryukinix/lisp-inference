@@ -10,8 +10,8 @@ Algorithm], maybe can you help me?
 
 # Usage
 
-The main usage for now it's using a truth-table generator by using
-it's command line interface. You can download the last release and use
+The main usage for now it's using as a truth-table generator by using
+its command line interface. You can download the last release and use
 as showed in the last picture.
 
 # License
