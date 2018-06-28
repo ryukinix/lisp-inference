@@ -10,13 +10,9 @@ Algorithm], maybe can you help me?
 
 # Usage
 
-Load it as a regular ASDF system as you wish and call `main` after
-`(in-package :lisp-inference)` for see a truth table, the better feature
-for now of this project. `tests` should show some related stuff about inference
-and equivalence rules.
-
-A better presentation and documentation will be write one day, because
-in soon it's too fast and this probably doesn't happen.
+The main usage for now it's using a truth-table generator by using
+it's command line interface. You can download the last release and use
+as showed in the last picture.
 
 # License
 BSD
