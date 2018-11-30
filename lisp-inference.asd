@@ -18,5 +18,17 @@
                (:file "inferences"
                 :depends-on ("parser" "operators"))
                (:file "truth-table"
-                :depends-on ("parser" "operators" "equivalences"))
-               (:file "test" :depends-on ("equivalences" "inferences"))))
+                :depends-on ("parser" "operators" "equivalences"))))
+
+(asdf:defsystem #:lisp-inference/test
+  :description "Lisp Inference Test Suit"
+  :author "Manoel Vilela <manoel_vilela@engineer.com>"
+  :license "BSD"
+  :version "0.1"
+  :serial t
+  :pathname "t"
+  :depends-on (:lisp-inference :prove)
+  :components ((:file "package")
+               (:file "tests"))
+  :perform (asdf:test-op :after (op c)
+                         (funcall (intern #.(string :run) :prove) c)))
