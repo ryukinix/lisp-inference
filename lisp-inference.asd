@@ -3,11 +3,13 @@
 
 ;;;; lisp-inference.asd
 
+(defparameter lisp-inference-version "0.1.0")
+
 (asdf:defsystem #:lisp-inference
   :description "An Inference Engine using Propositional Calculus"
   :author "Manoel Vilela <manoel_vilela@engineer.com>"
   :license "BSD"
-  :version "0.1"
+  :version lisp-inference-version
   :serial t
   :pathname "src"
   :components ((:file "package")
@@ -24,11 +26,10 @@
   :description "Lisp Inference Test Suit"
   :author "Manoel Vilela <manoel_vilela@engineer.com>"
   :license "BSD"
-  :version "0.1"
+  :version lisp-inference-version
   :serial t
   :pathname "t"
   :depends-on (:lisp-inference :prove)
-  :components ((:file "package")
-               (:file "tests"))
+  :components ((:file "test"))
   :perform (asdf:test-op :after (op c)
                          (funcall (intern #.(string :run) :prove) c)))
