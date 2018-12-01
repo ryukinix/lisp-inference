@@ -134,11 +134,21 @@
 (defun princ-n (string n)
   "Just print the STRING by N times"
   (dotimes (_ n) (princ string)))
+
 (defun print-bar (spaces)
   (princ "+")
   (princ-n "-" (1- (reduce #'+ spaces)))
   (princ "+")
   (princ #\newline))
+
+(defun eval-expression (exp)
+  "Return the boolean values of EXP
+Ex.: (eval-expression (=> p q))
+'TFTT'
+"
+  (let* ((tt (prepare-table (eval-operations (lookup-internal-operators exp))))
+         (tt-size (length exp)))
+    (apply #'concatenate 'string (cdr (nth (1- tt-size) tt)))))
 
 (defun print-truth-table (exp)
   "Given a EXP with prefixed notation generate
