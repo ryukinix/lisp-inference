@@ -28,7 +28,6 @@
   :serial t
   :pathname "t"
   :depends-on (:lisp-inference :prove)
-  :components ((:file "package")
-               (:file "tests"))
+  :components ((:file "test"))
   :perform (asdf:test-op :after (op c)
                          (funcall (intern #.(string :run) :prove) c)))
