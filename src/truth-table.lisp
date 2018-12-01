@@ -202,9 +202,13 @@ a tautology."
    Ex.: (truth-infix (p ^ q)) "
   `(print-truth-table (infix-to-prefix (quote , exp))))
 
+
 (defun main ()
   (format t "Example of usage: (^ p q)~%Operators: ~a ~%" *valid-operators*)
   (handler-case (loop do (princ "TRUTH-TABLE> ")
                       do (force-output)
                       do (print-truth-table (read)))
-    (end-of-file () (sb-ext:exit))))
+    (end-of-file () )
+    #+sbcl (sb-sys:interactive-interrupt () nil))
+
+  (format t "~%Goodbye!~%"))
