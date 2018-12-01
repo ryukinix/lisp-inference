@@ -42,6 +42,7 @@
            #:prefix-to-infix
            #:print-truth-table ;; truth-table.lisp
            #:eval-expression
+           #:equal-expression
            #:truth
            #:truth-infix
            #:main)
