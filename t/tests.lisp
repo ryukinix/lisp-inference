@@ -54,4 +54,31 @@
     'p
     "Equivalence: DOUBLE-NEGATION 2")
 
+
+(diag "== Truth-table tests!")
+
+(is (eval-expression '(^ p q))
+    "TFFF"
+    "AND OPERATION: p ^ q")
+
+(is (eval-expression '(v p q))
+    "TTTF"
+    "OR OPERATION: p v q")
+
+(is (eval-expression '(=> p q))
+    "TFTT"
+    "CONDITIONAL OPERATION: p => q")
+
+(is (eval-expression '(<=> p q))
+    "TFFT"
+    "BICONDITIONAL OPERATION: p <=> q")
+
+(is (eval-expression '([+] p q))
+    "FTTF"
+    "XOR OPERATION: p [+] q")
+
+(is (eval-expression '(~ p))
+    "FT"
+    "NOT OPERATION: ~ p")
+
 (finalize)
