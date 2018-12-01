@@ -188,9 +188,3 @@
                       do (force-output)
                       do (print-truth-table (read)))
     (end-of-file () (sb-ext:exit))))
-
-#+sbcl
-(defun dump-binary ()
-  (sb-ext:save-lisp-and-die "truth-table"
-                            :toplevel #'main
-                            :executable t))
