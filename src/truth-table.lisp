@@ -141,14 +141,24 @@
   (princ "+")
   (princ #\newline))
 
+(defun last-element (l)
+  (car (last l)))
+
 (defun eval-expression (exp)
   "Return the boolean values of EXP
 Ex.: (eval-expression (=> p q))
 'TFTT'
 "
   (let* ((tt (prepare-table (eval-operations (lookup-internal-operators exp))))
-         (tt-size (length exp)))
-    (apply #'concatenate 'string (cdr (nth (1- tt-size) tt)))))
+         (result (last-element tt)))
+    (apply #'concatenate 'string (cdr result))))
+
+(defun equal-expression (exp1 exp2)
+  "Check if the two expressions have the same truth tables.
+The result is the same as check if (exp1 <=> exp2) results in
+a tautology."
+  (equal (eval-expression exp1)
+         (eval-expression exp2)))
 
 (defun print-truth-table (exp)
   "Given a EXP with prefixed notation generate
