@@ -19,6 +19,8 @@ ros install ryukinix/lisp-inference
 ~/.roswell/bin/inference
 ```
 
+You need `ros` installed: [Roswell](https://github.com/roswell/roswell)
+
 # License
 BSD
 
