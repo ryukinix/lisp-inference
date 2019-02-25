@@ -3,12 +3,17 @@
 #|
 exec ros -Q -- $0 "$@"
 |#
+
+#+quicklisp (defun ensure-dist-installed (dist nick)
+              (let ((d (ql-dist:find-dist nick)))
+                (when (not (and d (ql-dist:installedp d)))
+                 (ql-dist:install-dist dist
+                                       :prompt nil))))
+
 (progn ;;init forms
   (ros:ensure-asdf)
   #+quicklisp (progn
-                (ql-dist:install-dist "http://dist.ultralisp.org"
-                                      :prompt nil
-                                      :replace t)
+                (ensure-dist-installed "http://dist.ultralisp.org" "ultralisp")
                 (ql:quickload '(lisp-inference) :silent t))
 
   )
