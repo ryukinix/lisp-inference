@@ -12,7 +12,12 @@ Algorithm], maybe can you help me?
 
 The main usage for now it's using as a truth-table generator by using
 its command line interface. You can download the last release and use
-as showed in the last picture.
+as showed in the last picture as following:
+
+```
+ros install ryukinix/lisp-inference
+~/.roswell/bin/inference
+```
 
 # License
 BSD
