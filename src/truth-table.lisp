@@ -3,6 +3,9 @@
 
 (in-package :lisp-inference)
 
+(defparameter *truth-string* "T")
+(defparameter *false-string* "F")
+
 (defun propositionp (symbol)
   "Check if the given SYMBOL can be a proposition (letters)"
   (and (atom symbol)
@@ -106,8 +109,8 @@
 
 (defun pretty-values (v)
   (if (not (null v))
-      "T"
-      "F"))
+      *truth-string*
+      *false-string*))
 
 (defun prepare-table (evaluated-cases)
   "Get the evaluated cases after EVAL-OPERATIONS
@@ -204,10 +207,10 @@ a tautology."
 
 
 (defun main ()
-  (format t "Example of usage: (^ p q)~%Operators: ~a ~%" *valid-operators*)
+  (format t "Example of usage: (p ^ q)~%Operators: ~a ~%" *valid-operators*)
   (handler-case (loop do (princ "TRUTH-TABLE> ")
                       do (force-output)
-                      do (print-truth-table (read)))
+                      do (print-truth-table (infix-to-prefix (read))))
     (end-of-file () )
     #+sbcl (sb-sys:interactive-interrupt () nil))
 

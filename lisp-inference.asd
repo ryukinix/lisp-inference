@@ -8,7 +8,7 @@
   :description "An Inference Engine using Propositional Calculus"
   :author "Manoel Vilela <manoel_vilela@engineer.com>"
   :license "BSD"
-  :version "0.1.0"
+  :version "0.2.0"
   :serial t
   :pathname "src"
   :components ((:file "package")
@@ -25,7 +25,7 @@
   :description "Lisp Inference Test Suit"
   :author "Manoel Vilela <manoel_vilela@engineer.com>"
   :license "BSD"
-  :version "0.1.0"
+  :version "0.2.0"
   :serial t
   :pathname "t"
   :depends-on (:lisp-inference :prove)

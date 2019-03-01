@@ -102,4 +102,17 @@
                       '(p))
     "EQUAL EXPRESSION 2")
 
+(diag "== Infix Parsing")
+
+(is (infix-to-prefix '(~ (p v q)))
+    '(~ (v p q)))
+
+(is (infix-to-prefix '(p => q))
+    '(=> p q))
+
+(is (infix-to-prefix '((p v q) <=> ((~ p) ^ (~ q))))
+    '(<=> (v p q)
+         (^ (~ p)
+            (~ q))))
+
 (finalize)

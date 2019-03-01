@@ -40,6 +40,7 @@
            #:make-biconditional
            #:*valid-operators*
            #:prefix-to-infix
+           #:infix-to-prefix
            #:print-truth-table ;; truth-table.lisp
            #:eval-expression
            #:equal-expression
