@@ -3,6 +3,9 @@
 
 (in-package :lisp-inference)
 
+(defparameter *truth-string* "T")
+(defparameter *false-string* "F")
+
 (defun propositionp (symbol)
   "Check if the given SYMBOL can be a proposition (letters)"
   (and (atom symbol)
@@ -106,8 +109,8 @@
 
 (defun pretty-values (v)
   (if (not (null v))
-      "T"
-      "F"))
+      *truth-string*
+      *false-string*))
 
 (defun prepare-table (evaluated-cases)
   "Get the evaluated cases after EVAL-OPERATIONS
