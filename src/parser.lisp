@@ -112,8 +112,19 @@
 
 
 (defun infix-to-prefix (exp)
-    (cond ((atom exp) exp)
-          ((null (cdr exp)) (infix-to-prefix (car exp)))
-          (t (list (cadr exp)
-                   (infix-to-prefix (car exp))
-                   (infix-to-prefix (cddr exp))))))
+  "INFIX-TO-PREFIX translate a infix expression to a prefix expression.
+
+This function assumes that exp it is not ambiguous.
+In that case, use a completly 'parenthesed' expression
+
+Returns a new prefixed list.
+"
+  (cond ((atom exp) exp)
+        ((and (listp exp)
+              (= 2 (length exp)))
+         (list (car exp)
+               (infix-to-prefix (cdr exp))))
+        ((null (cdr exp)) (infix-to-prefix (car exp)))
+        (t (list (cadr exp)
+                 (infix-to-prefix (car exp))
+                 (infix-to-prefix (cddr exp))))))
