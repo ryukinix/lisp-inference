@@ -204,10 +204,10 @@ a tautology."
 
 
 (defun main ()
-  (format t "Example of usage: (^ p q)~%Operators: ~a ~%" *valid-operators*)
+  (format t "Example of usage: (p ^ q)~%Operators: ~a ~%" *valid-operators*)
   (handler-case (loop do (princ "TRUTH-TABLE> ")
                       do (force-output)
-                      do (print-truth-table (read)))
+                      do (print-truth-table (infix-to-prefix (read))))
     (end-of-file () )
     #+sbcl (sb-sys:interactive-interrupt () nil))
 
