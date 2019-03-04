@@ -21,6 +21,20 @@
                (:file "truth-table"
                 :depends-on ("parser" "operators" "equivalences"))))
 
+(asdf:defsystem #:lisp-inference/web
+  :description "An web interface for Lisp Inference Truth Table"
+  :author "Manoel Vilela <manoel_vilela@engineer.com>"
+  :license "BSD"
+  :version "0.2.0"
+  :serial t
+  :depends-on (:lisp-inference
+               :weblocks
+               :weblocks-ui
+               :find-port
+               :str)
+  :pathname "web"
+  :components ((:file "webapp")))
+
 (asdf:defsystem #:lisp-inference/test
   :description "Lisp Inference Test Suit"
   :author "Manoel Vilela <manoel_vilela@engineer.com>"
