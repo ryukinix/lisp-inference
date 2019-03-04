@@ -5,7 +5,7 @@
 
 (defparameter *truth-string* "T")
 (defparameter *false-string* "F")
-(defparameter *output-stream* *standard-output*
+(defparameter *output-stream* nil
   "Default stream to write the results")
 
 (defun propositionp (symbol)
@@ -211,10 +211,11 @@ a tautology."
 
 (defun main ()
   (format t "Example of usage: (p ^ q)~%Operators: ~a ~%" *valid-operators*)
-  (handler-case (loop do (princ "TRUTH-TABLE> ")
-                      do (force-output)
-                      do (print-truth-table (infix-to-prefix (read))))
-    (end-of-file () )
-    #+sbcl (sb-sys:interactive-interrupt () nil))
+  (let ((*output-stream* *standard-output*))
+   (handler-case (loop do (princ-n "TRUTH-TABLE> ")
+                       do (force-output *output-stream*)
+                       do (print-truth-table (infix-to-prefix (read))))
+     (end-of-file () )
+     #+sbcl (sb-sys:interactive-interrupt () nil))
 
-  (format t "~%Goodbye!~%"))
+   (format t "~%Goodbye!~%")))
