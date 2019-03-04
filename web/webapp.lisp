@@ -12,13 +12,13 @@
                 #:defapp)
   (:export #:start
            #:stop
-           #:*propostion*
+           #:*proposition*
            #:*port*)
   (:nicknames #:webapp))
 
 (in-package lisp-inference/web)
 
-(defvar *proposition* '(P => Q) "Default proposition")
+(defvar *proposition* "P => Q" "Default proposition")
 (defvar *port* (find-port:find-port))
 
 (defapp truth-table
@@ -33,6 +33,15 @@
     :initarg :truth
     :initform nil
     :accessor truth)))
+
+(defun parse-string (string)
+  "Translate string to a list expression"
+  (mapcar (lambda (x)
+            (intern (string-upcase x) :lisp-inference))
+          (str:words string)))
+
+(defun trim-paren (string)
+  (string-trim '(#\( #\)) string))
 
 (defun truth-table (exp)
   (with-output-to-string (s)
@@ -57,9 +66,7 @@
 (defmethod update-proposition (table (string string))
   (update-proposition
     table
-    (mapcar (lambda (x)
-              (intern (string-upcase x)))
-            (str:words (string-trim '(#\( #\)) string)))))
+    (parse-string string)))
 
 (defmethod render ((table table))
   (with-html
@@ -68,7 +75,7 @@
                              (update-proposition table prop)))
       (:input :type "text"
               :name "prop"
-              :placeholder (prop table))
+              :placeholder (trim-paren (prop table)))
       (:input :type "submit"
               :value "Eval"))
     (:pre (truth table))))
@@ -79,7 +86,7 @@
 
 (defmethod weblocks/session:init ((app truth-table))
   (declare (ignorable app))
-  (create-table *proposition*))
+  (create-table (parse-string *proposition*)))
 
 (defun start (&optional (port *port*))
   (weblocks/debug:on)
