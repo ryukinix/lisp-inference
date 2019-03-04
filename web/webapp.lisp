@@ -42,9 +42,10 @@
 
 (defun parse-string (string)
   "Translate string to a list expression"
-  (mapcar (lambda (x)
-            (intern (string-upcase x) :lisp-inference))
-          (str:words string)))
+  (if (and (str:starts-with-p "(" string)
+           (str:ends-with-p ")" string))
+      (read-from-string string)
+      (read-from-string (str:concat "(" string ")"))))
 
 (defun trim-paren (string)
   (string-trim '(#\( #\)) string))
