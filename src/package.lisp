@@ -47,5 +47,6 @@
            #:truth
            #:truth-infix
            #:*output-stream*
+           #:*valid-operators*
            #:main)
   (:nicknames "INFERENCE"))

@@ -7,7 +7,7 @@
 (eval-when (:compile-toplevel)
   (defconstant F nil))
 
-(defparameter *valid-operators* '(~ ^ <=> => v [+]))
+(defparameter *valid-operators* '(~ ^ <=> => -> <-> v [+]))
 
 ;; operators
 (defun ~ (p)
@@ -23,12 +23,20 @@
   (or p q))
 
 (defun => (p q)
-  "Implication binary operator"
+  "Conditional binary operator"
   (v (~ p) q))
 
 (defun <=> (p q)
   "Biconditional binary operator"
   (^ (=> p q) (=> q p)))
+
+(defun -> (p q)
+  "Notation alias for conditional"
+  (=> p q))
+
+(defun <-> (p q)
+  "Notation alias for biconditional"
+  (<=> p q))
 
 (defun [+] (p q)
   "XOR operator or exclusive disjunction operator"
