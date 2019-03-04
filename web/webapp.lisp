@@ -79,7 +79,7 @@
                              (update-proposition table prop)))
       (:input :type "text"
               :name "prop"
-              :placeholder (trim-paren (prop table)))
+              :placeholder (prop table))
       (:input :type "submit"
               :value "Eval"))
     (:pre (truth table))
