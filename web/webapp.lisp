@@ -78,7 +78,8 @@
               :placeholder (trim-paren (prop table)))
       (:input :type "submit"
               :value "Eval"))
-    (:pre (truth table))))
+    (:pre (truth table))
+    (:pre (format nil "Operators: ~a" inference:*valid-operators*) )))
 
 (defmethod render ((string string))
   (with-html
