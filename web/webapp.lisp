@@ -10,7 +10,8 @@
                 #:make-js-action)
   (:import-from #:weblocks/app
                 #:defapp)
-  (:export #:main
+  (:export #:start
+           #:stop
            #:*propostion*
            #:*port*)
   (:nicknames #:webapp))
@@ -80,7 +81,10 @@
   (declare (ignorable app))
   (create-table *proposition*))
 
-(defun main (&optional (port *port*))
+(defun start (&optional (port *port*))
   (weblocks/debug:on)
   (weblocks/server:stop)
   (weblocks/server:start :port port))
+
+(defun stop ()
+  (weblocks/server:stop))
