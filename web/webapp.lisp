@@ -79,7 +79,14 @@
       (:input :type "submit"
               :value "Eval"))
     (:pre (truth table))
-    (:pre (format nil "Operators: ~a" inference:*valid-operators*) )))
+    (:pre (format nil "Operators: ~a" inference:*valid-operators*))
+    (:p "Some notes: "
+        (:ul
+         (loop for note in '("My lexer doesn't works very well for parenthesis."
+                             "Please, don't be evil. Use less than 10 variables."
+                             "Yes, [+] it's a XOR. Mathematically: p ⊕ q."
+                             "(=> ->) and (<=> <->) are aliases.")
+               do (:li (render note)))))))
 
 (defmethod render ((string string))
   (with-html
