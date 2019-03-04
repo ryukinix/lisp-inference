@@ -42,12 +42,10 @@
 
 (defun parse-string (string)
   "Translate string to a list expression"
-  (mapcar (lambda (x)
-            (intern (string-upcase x) :lisp-inference))
-          (str:words string)))
-
-(defun trim-paren (string)
-  (string-trim '(#\( #\)) string))
+  (if (and (str:starts-with-p "(" string)
+           (str:ends-with-p ")" string))
+      (read-from-string string)
+      (read-from-string (str:concat "(" string ")"))))
 
 (defun truth-table (exp)
   (with-output-to-string (s)
@@ -81,7 +79,7 @@
                              (update-proposition table prop)))
       (:input :type "text"
               :name "prop"
-              :placeholder (trim-paren (prop table)))
+              :placeholder (prop table))
       (:input :type "submit"
               :value "Eval"))
     (:pre (truth table))
