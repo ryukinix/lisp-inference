@@ -1,0 +1,49 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+
+#+quicklisp (defun ensure-dist-installed (dist nick)
+              (let ((d (ql-dist:find-dist nick)))
+                (when (not (and d (ql-dist:installedp d)))
+                 (ql-dist:install-dist dist
+                                       :prompt nil))))
+
+(progn ;;init forms
+  (ros:ensure-asdf)
+  #+quicklisp (progn
+                (ensure-dist-installed "http://dist.ultralisp.org" "ultralisp")
+                (ql:quickload '(lisp-inference/web)))
+
+  )
+
+(defpackage :ros.script.lisp-inference/web
+  (:use :cl))
+(in-package :ros.script.lisp-inference/web)
+
+(defparameter *port* lisp-inference/web:*port*)
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+  (when (car argv)
+    (setq *port* (parse-integer (car argv))))
+  (unwind-protect
+       (handler-case
+           (progn
+             (format t "[+] Starting Lisp Inference server...~%")
+             (lisp-inference/web:start *port*)
+             (format t "[+] http://127.0.0.1:~a~%" *port*)
+             (format t "[+] Press C-c to kill Lisp Inference server...~%")
+             (loop do (sleep 10)))
+         (#+sbcl sb-sys:interactive-interrupt
+          #+ccl  ccl:interrupt-signal-condition
+          #+clisp system::simple-interrupt-condition
+          #+ecl ext:interactive-interrupt
+          #+allegro excl:interrupt-signal
+          () (progn
+               (format *error-output* "Aborting.~&")
+               (lisp-inference/web:stop)
+               (uiop:quit))))
+    (lisp-inference/web:stop)))
+;;; vim: set ft=lisp lisp:
