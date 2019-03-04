@@ -47,9 +47,6 @@
       (read-from-string string)
       (read-from-string (str:concat "(" string ")"))))
 
-(defun trim-paren (string)
-  (string-trim '(#\( #\)) string))
-
 (defun truth-table (exp)
   (with-output-to-string (s)
     (let ((inference:*output-stream* s))
