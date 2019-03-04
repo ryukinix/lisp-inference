@@ -5,6 +5,8 @@
 
 (defparameter *truth-string* "T")
 (defparameter *false-string* "F")
+(defparameter *output-stream* *standard-output*
+  "Default stream to write the results")
 
 (defun propositionp (symbol)
   "Check if the given SYMBOL can be a proposition (letters)"
@@ -134,15 +136,16 @@
         do (nsubst (intern-symbol op-name) op-name exp)
         finally (return exp)))
 
-(defun princ-n (string n)
+(defun princ-n (string &optional (n 1))
   "Just print the STRING by N times"
-  (dotimes (_ n) (princ string)))
+  (dotimes (_ n)
+    (format *output-stream* "~a" string)))
 
 (defun print-bar (spaces)
-  (princ "+")
+  (princ-n "+" 1)
   (princ-n "-" (1- (reduce #'+ spaces)))
-  (princ "+")
-  (princ #\newline))
+  (princ-n "+" 1)
+  (princ-n #\newline))
 
 (defun last-element (l)
   (car (last l)))
@@ -175,25 +178,25 @@ a tautology."
                                  collect (concatenate 'string "  " p "  |")))
          (spaces (mapcar #'length printable-header)))
     (print-bar spaces)
-    (princ "|")
+    (princ-n "|")
     (loop for exp in printable-header
-          do (princ exp)
-          finally (princ #\newline))
+          do (princ-n exp)
+          finally (princ-n #\newline))
     (print-bar spaces)
     (loop for n-value from 1 below n-values
           do (progn
-               (princ "|")
+               (princ-n "|")
                (loop for n-exp from 0 below (length header)
                      do (let* ((space (nth n-exp spaces))
                                (half-space (floor (- space 2) 2))
                                (val (nth n-value (nth n-exp truth-table))))
                           (princ-n " " half-space)
-                          (princ val)
+                          (princ-n val)
                           (princ-n " " half-space)
                           (if (oddp space)
-                              (princ " |")
-                              (princ "|"))))
-               (princ #\newline)))
+                              (princ-n " |")
+                              (princ-n "|"))))
+               (princ-n #\newline)))
     (print-bar spaces)))
 
 (defmacro truth (exp)

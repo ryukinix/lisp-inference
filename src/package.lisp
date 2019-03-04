@@ -46,5 +46,6 @@
            #:equal-expression
            #:truth
            #:truth-infix
+           #:*output-stream*
            #:main)
   (:nicknames "INFERENCE"))
