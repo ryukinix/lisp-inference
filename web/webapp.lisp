@@ -12,6 +12,7 @@
                 #:defapp)
   (:export #:start
            #:stop
+           #:*notes*
            #:*proposition*
            #:*port*)
   (:nicknames #:webapp))
@@ -20,6 +21,11 @@
 
 (defvar *proposition* "P => Q" "Default proposition")
 (defvar *port* (find-port:find-port))
+(defvar *notes*
+  '("My lexer doesn't works very well for parenthesis."
+    "Please, don't be evil. Use less than 10 variables."
+    "Yes, [+] it's a XOR. Mathematically: p ⊕ q."
+    "(=> ->) and (<=> <->) are aliases."))
 
 (defapp truth-table
   :prefix "/"
@@ -82,11 +88,15 @@
     (:pre (format nil "Operators: ~a" inference:*valid-operators*))
     (:p "Some notes: "
         (:ul
-         (loop for note in '("My lexer doesn't works very well for parenthesis."
-                             "Please, don't be evil. Use less than 10 variables."
-                             "Yes, [+] it's a XOR. Mathematically: p ⊕ q."
-                             "(=> ->) and (<=> <->) are aliases.")
-               do (:li (render note)))))))
+         (loop for note in *notes*
+               do (:li (render note)))))
+    (:span "Source: "
+           (:a :href "https://github.com/ryukinix/lisp-inference"
+               "ryukinix/lisp-inference"))
+    (:br)
+    (:span "Documentation: "
+           (:a :href
+               "https://lerax.me/lisp-inference" "lerax.me/lisp-inference"))))
 
 (defmethod render ((string string))
   (with-html
