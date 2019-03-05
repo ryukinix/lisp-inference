@@ -57,26 +57,23 @@
                  :prop (format nil "~a" exp)
                  :truth (truth-table exp)))
 
-(defun update-table (table exp)
+(defgeneric update-table (table exp))
+
+(defmethod update-table (table (exp list))
   (setf (prop table) (format nil "~a" exp))
-  (setf (truth table) (truth-table exp)))
-
-(defgeneric update-proposition (table exp))
-
-(defmethod update-proposition (table (exp list))
-  (update-table table exp)
+  (setf (truth table) (truth-table exp))
   (update table))
 
-(defmethod update-proposition (table (string string))
-  (update-proposition
-    table
-    (parse-string string)))
+(defmethod update-table (table (exp string))
+  (update-table
+   table
+   (parse-string exp)))
 
 (defmethod render ((table table))
   (with-html
     (:h1 "Lisp Inference Truth Table System")
     (with-html-form (:POST (lambda (&key prop &allow-other-keys)
-                             (update-proposition table prop)))
+                             (update-table table prop)))
       (:input :type "text"
               :name "prop"
               :placeholder (prop table))
@@ -87,7 +84,7 @@
     (:p "Some notes: "
         (:ul
          (loop for note in *notes*
-               do (:li (render note)))))
+               do (:li (render-note note)))))
     (:span "Source: "
            (:a :href "https://github.com/ryukinix/lisp-inference"
                "ryukinix/lisp-inference"))
@@ -96,7 +93,7 @@
            (:a :href
                "https://lerax.me/lisp-inference" "lerax.me/lisp-inference"))))
 
-(defmethod render ((string string))
+(defun render-note (string)
   (with-html
     (:pre string)))
 
