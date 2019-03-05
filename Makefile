@@ -13,4 +13,7 @@ check:
 	@$(SBCL_CMD) run-test.lisp
 
 
+server:
+	@$(SBCL_CMD) run-server.lisp
+
 .PHONY: check
