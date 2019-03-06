@@ -22,7 +22,7 @@
 (defvar *proposition* "P => Q" "Default proposition")
 (defvar *port* (find-port:find-port))
 (defvar *notes*
-  '("My lexer doesn't works very well for parenthesis."
+  '("My lexer doesn't work very well for parenthesis."
     "Please, don't be evil. Use less than 10 variables."
     "Yes, [+] it's a XOR. Mathematically: p ⊕ q."
     "(=> ->) and (<=> <->) are aliases."))
