@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ryukinix/lisp-inference.svg?branch=master)](https://travis-ci.org/ryukinix/lisp-inference)
+
 # Lisp Inference
 
 A non-full featured Lisp Inference Engine because I didn't implemented
