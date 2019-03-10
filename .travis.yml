@@ -1,4 +1,6 @@
 services:
   - docker
 
-script: make docker-check
+script:
+  - make docker-build
+  - make docker-check
