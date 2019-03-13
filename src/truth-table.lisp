@@ -5,7 +5,7 @@
 
 (defparameter *truth-string* "T")
 (defparameter *false-string* "F")
-(defparameter *output-stream* nil
+(defparameter *output-stream* *standard-output*
   "Default stream to write the results")
 
 (defun propositionp (symbol)
