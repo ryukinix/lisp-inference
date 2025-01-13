@@ -22,7 +22,7 @@
 (defvar *proposition* "P => Q" "Default proposition")
 (defvar *port* (find-port:find-port))
 (defvar *notes*
-  '("My lexer doesn't work very well for parenthesis."
+  '("My lexer doesn't work very well with parenthesis."
     "Please, don't be evil. Use less than 10 variables."
     "Yes, [+] it's a XOR. Mathematically: p ⊕ q."
     "(=> ->) and (<=> <->) are aliases."))
@@ -71,16 +71,17 @@
 
 (defmethod render ((table table))
   (with-html
-    (:h1 "Lisp Inference Truth Table System")
-    (with-html-form (:POST (lambda (&key prop &allow-other-keys)
-                             (update-table table prop)))
-      (:input :type "text"
-              :name "prop"
-              :placeholder (prop table))
-      (:input :type "submit"
-              :value "Eval"))
-    (:pre (truth table))
-    (:pre (format nil "Operators: ~a" inference:*valid-operators*))
+    (:h1 :align "center" "Lisp Inference Truth Table System")
+    (:div :align "center"
+          (with-html-form (:POST (lambda (&key prop &allow-other-keys)
+                                   (update-table table prop)))
+            (:input :type "text"
+                    :name "prop"
+                    :placeholder (prop table))
+            (:input :type "submit"
+                    :value "Eval"))
+          (:pre :style "font-size: 25px" (truth table))
+          (:pre (format nil "Operators: ~a" inference:*valid-operators*)))
     (:p "Some notes: "
         (:ul
          (loop for note in *notes*
