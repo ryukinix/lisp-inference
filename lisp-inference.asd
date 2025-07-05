@@ -29,12 +29,12 @@
   :version "0.2.0"
   :serial t
   :depends-on (:lisp-inference
+               :40ants-routes ;; implicit dependency of reblocks
                :reblocks
                :reblocks-ui
                :clack-handler-hunchentoot
                :find-port
-               :str
-               :40ants-routes)
+               :str)
   :pathname "web"
   :components ((:file "webapp")))
 
