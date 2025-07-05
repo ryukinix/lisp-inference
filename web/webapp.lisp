@@ -22,8 +22,7 @@
 (defvar *proposition* "P => Q" "Default proposition")
 (defvar *port* (find-port:find-port))
 (defvar *notes*
-  '("My lexer doesn't work very well with parenthesis."
-    "Please, don't be evil. Use less than 10 variables."
+  '("Please, don't be evil. Use less than 10 variables."
     "Yes, [+] it's a XOR. Mathematically: p ⊕ q."
     "(=> ->) and (<=> <->) are aliases."))
 
@@ -43,24 +42,19 @@
 (defun truth-table (exp)
   (with-output-to-string (s)
     (let ((inference:*output-stream* s))
-      (inference:print-truth-table exp))))
+      (inference:print-truth-table (inference:parse-logic exp)))))
 
-(defun create-table (exp)
+(defun create-table (exp-string)
   (make-instance 'table
-                 :prop (format nil "~a" exp)
-                 :truth (truth-table exp)))
+                 :prop exp-string
+                 :truth (truth-table exp-string)))
 
 (defgeneric update-table (table exp))
 
-(defmethod update-table (table (exp list))
-  (setf (prop table) (format nil "~a" exp))
-  (setf (truth table) (truth-table exp)
-  (update table))
-
 (defmethod update-table (table (exp string))
-  (update-table
-   table
-   (inference:parse-logic exp)))
+  (setf (prop table) exp)
+  (setf (truth table) (truth-table exp))
+  (update table))
 
 (defmethod render ((table table))
   (with-html
@@ -93,7 +87,7 @@
 
 (defmethod weblocks/session:init ((app truth-table))
   (declare (ignorable app))
-  (create-table (parse-string *proposition*)))
+  (create-table *proposition*))
 
 (defun start (&optional (port *port*))
   (weblocks/debug:on)

@@ -2,11 +2,13 @@
 
 (defparameter *binding-precedence*
   '(
-    ("^" . 80) 
+    ("^" . 80)
     ("v" . 70)
-    ("[+]" . 60) 
+    ("[+]" . 60)
     ("=>" . 50)
-    ("<=>" . 40)))
+    ("->" . 50)
+    ("<=>" . 40)
+    ("<->" . 40)))
 
 (defvar *tokens* nil)
 (defvar *pos* 0)
@@ -22,11 +24,11 @@
          ((member c '(#\Space #\Tab #\Newline)) (read-char stream) (read-token stream))
          ((alpha-char-p c)
           (let ((sym (read stream)))
-                      (list (string-downcase (string sym)))))
+            (list (string-downcase (string sym)))))
          (t
           (let ((token (with-output-to-string (out)
                          (loop for ch = (peek-char nil stream nil nil)
-                               while (and ch (find ch "<=>[+]"))
+                               while (and ch (find ch "<=>-[+]"))
                                do (write-char (read-char stream) out)))))
             (if (string= token "") (list (string (read-char stream))) (list token)))))))))
 
@@ -36,10 +38,10 @@
           while token
           append token)))
 
-(defun next-token () 
+(defun next-token ()
   (nth *pos* *tokens*))
 
-(defun advance () 
+(defun advance ()
   (prog1 (next-token) (incf *pos*)))
 
 (defun match (tok)

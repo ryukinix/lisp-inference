@@ -31,6 +31,7 @@
   :depends-on (:lisp-inference
                :weblocks
                :weblocks-ui
+               :clack-handler-hunchentoot
                :find-port
                :str)
   :pathname "web"
