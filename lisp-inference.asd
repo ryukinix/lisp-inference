@@ -14,12 +14,13 @@
   :components ((:file "package")
                (:file "operators")
                (:file "parser")
+               (:file "pratt")
                (:file "equivalences"
                 :depends-on ("parser" "operators"))
                (:file "inferences"
                 :depends-on ("parser" "operators"))
                (:file "truth-table"
-                :depends-on ("parser" "operators" "equivalences"))))
+                :depends-on ("pratt" "parser" "operators" "equivalences"))))
 
 (asdf:defsystem #:lisp-inference/web
   :description "An web interface for Lisp Inference Truth Table"
@@ -30,6 +31,7 @@
   :depends-on (:lisp-inference
                :weblocks
                :weblocks-ui
+               :clack-handler-hunchentoot
                :find-port
                :str)
   :pathname "web"

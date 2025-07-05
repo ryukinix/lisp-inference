@@ -15,6 +15,7 @@
            #:simplification-first
            #:simplification-second
            #:syllogism-hypothetical
+           #:parse-logic ;; pratt
            #:absorption     ;; parser
            #:propositionp
            #:operationp
