@@ -1,0 +1,19 @@
+name: documentation
+on:
+  push:
+    branches:
+      - master
+      - auto-docs
+
+permissions:
+  pages: write
+  id-token: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: shinmera/staple@v2.0.0
+        with:
+          gh-pages: true
+          dist: http://dist.ultralisp.org
