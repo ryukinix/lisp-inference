@@ -203,6 +203,7 @@ a tautology."
   "A easy way to generate a truth table"
   `(print-truth-table (quote ,exp)))
 
+;; TODO: implement a pratt parser
 (defmacro truth-infix (exp)
   "A easy and infix way of EXP generate a truth table.
    Ex.: (truth-infix (p ^ q)) "
@@ -212,9 +213,9 @@ a tautology."
 (defun main ()
   (format t "Example of usage: (p ^ q)~%Operators: ~a ~%" *valid-operators*)
   (let ((*output-stream* *standard-output*))
-   (handler-case (loop do (princ-n "TRUTH-TABLE> ")
+    (handler-case (loop do (princ-n "TRUTH-TABLE> ")
                        do (force-output *output-stream*)
-                       do (print-truth-table (infix-to-prefix (read))))
+                       do (print-truth-table (parse-logic (read-line))))
      (end-of-file () )
      #+sbcl (sb-sys:interactive-interrupt () nil))
 

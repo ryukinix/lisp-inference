@@ -40,17 +40,10 @@
     :initform nil
     :accessor truth)))
 
-(defun parse-string (string)
-  "Translate string to a list expression"
-  (if (and (str:starts-with-p "(" string)
-           (str:ends-with-p ")" string))
-      (read-from-string string)
-      (read-from-string (str:concat "(" string ")"))))
-
 (defun truth-table (exp)
   (with-output-to-string (s)
     (let ((inference:*output-stream* s))
-      (inference:print-truth-table (inference:infix-to-prefix exp)))))
+      (inference:print-truth-table exp))))
 
 (defun create-table (exp)
   (make-instance 'table
@@ -61,13 +54,13 @@
 
 (defmethod update-table (table (exp list))
   (setf (prop table) (format nil "~a" exp))
-  (setf (truth table) (truth-table exp))
+  (setf (truth table) (truth-table exp)
   (update table))
 
 (defmethod update-table (table (exp string))
   (update-table
    table
-   (parse-string exp)))
+   (inference:parse-logic exp)))
 
 (defmethod render ((table table))
   (with-html
