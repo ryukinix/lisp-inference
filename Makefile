@@ -1,7 +1,8 @@
 SBCL_CMD := sbcl --noinform --disable-debugger --load
 OBJECTS := lisp-inference
 DOCKER_IMG = lisp-inference
-PUBLIC_IMG = ryukinix/$(DOCKER_IMG)
+VERSION := latest
+PUBLIC_IMG = ryukinix/$(DOCKER_IMG):$(VERSION)
 
 all: $(OBJECTS)
 
@@ -20,14 +21,14 @@ server:
 docker-build:
 	docker build -t $(DOCKER_IMG) .
 
-docker-run:
+docker-run: docker-build
 	docker run --rm -it --network=host $(DOCKER_IMG)
 
-docker-check:
+docker-check: docker-build
 	docker run --rm -t --entrypoint=ros $(DOCKER_IMG) run -s lisp-inference/test -l run-test.lisp
 
-docker-publish:
+docker-publish: docker-build
 	docker tag $(DOCKER_IMG) $(PUBLIC_IMG)
 	docker push $(PUBLIC_IMG)
 
-.PHONY: check
+.PHONY: check docker-build
