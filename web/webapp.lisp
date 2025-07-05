@@ -1,21 +1,26 @@
 (defpackage lisp-inference/web
   (:use #:cl
-        #:weblocks-ui/form
-        #:weblocks/html)
-  (:import-from #:weblocks/widget
+        #:reblocks-ui/form
+        #:reblocks/html)
+  (:import-from #:reblocks/widget
                 #:render
                 #:update
                 #:defwidget)
-  (:import-from #:weblocks/actions
+  (:import-from #:reblocks/actions
                 #:make-js-action)
-  (:import-from #:weblocks/app
+  (:import-from #:reblocks/app
                 #:defapp)
+  (:import-from #:reblocks-ui/core
+                #:ui-widget)
+  (:import-from #:reblocks/page
+                #:init-page)
   (:export #:start
            #:stop
            #:*notes*
            #:*proposition*
            #:*port*)
   (:nicknames #:webapp))
+;; reblocks docs: https://40ants.com/reblocks/
 
 (in-package lisp-inference/web)
 
@@ -30,7 +35,7 @@
   :prefix "/"
   :description "Lisp Inference Truth Table")
 
-(defwidget table ()
+(defwidget table (ui-widget)
   ((prop
     :initarg :prop
     :accessor prop)
@@ -57,10 +62,10 @@
   (update table))
 
 (defmethod render ((table table))
-  (with-html
+  (reblocks/html:with-html ()
     (:h1 :align "center" "Lisp Inference Truth Table System")
     (:div :align "center"
-          (with-html-form (:POST (lambda (&key prop &allow-other-keys)
+          (reblocks-ui/form:with-html-form (:POST (lambda (&key prop &allow-other-keys)
                                    (update-table table prop)))
             (:input :type "text"
                     :name "prop"
@@ -82,17 +87,17 @@
                "https://lerax.me/lisp-inference" "lerax.me/lisp-inference"))))
 
 (defun render-note (string)
-  (with-html
+  (reblocks/html:with-html ()
     (:pre string)))
 
-(defmethod weblocks/session:init ((app truth-table))
-  (declare (ignorable app))
+(defmethod reblocks/page:init-page ((app truth-table) (url-path string) expire-at)
+  (declare (ignorable app url-path expire-at))
   (create-table *proposition*))
 
 (defun start (&optional (port *port*))
-  (weblocks/debug:on)
-  (weblocks/server:stop)
-  (weblocks/server:start :port port))
+  (reblocks/debug:on)
+  (reblocks/server:stop)
+  (reblocks/server:start :port port))
 
 (defun stop ()
-  (weblocks/server:stop))
+  (reblocks/server:stop))
