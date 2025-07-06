@@ -35,4 +35,7 @@ docker-publish: docker-build
 	docker tag $(DOCKER_IMG) $(PUBLIC_IMG)
 	docker push $(PUBLIC_IMG)
 
+deploy: docker-publish
+	ssh starfox bash /home/lerax/Deploy/logic.sh
+
 .PHONY: check docker-build
