@@ -14,6 +14,8 @@
                 #:ui-widget)
   (:import-from #:reblocks/page
                 #:init-page)
+  (:import-from #:reblocks/request
+                #:get-parameter)
   (:export #:start
            #:stop
            #:*notes*
@@ -62,16 +64,39 @@
   (update table))
 
 (defmethod render ((table table))
+  (let ((url-prop (get-parameter "prop")))
+    (when (and url-prop (string/= url-prop "") (string/= url-prop (prop table)))
+      (update-table table url-prop)))
   (reblocks/html:with-html ()
     (:h1 :align "center" "Lisp Inference Truth Table System")
     (:div :align "center"
           (reblocks-ui/form:with-html-form (:POST (lambda (&key prop &allow-other-keys)
                                    (update-table table prop)))
             (:input :type "text"
+                    :id "prop-input"
                     :name "prop"
                     :placeholder (prop table))
             (:input :type "submit"
-                    :value "Eval"))
+                    :value "Eval")
+            (:input :type "button"
+                    :value "Share"
+                    :onclick "
+var prop = document.getElementById('prop-input').value || document.getElementById('prop-input').placeholder;
+var url = window.location.origin + window.location.pathname + '?prop=' + encodeURIComponent(prop);
+var shareUrlInput = document.getElementById('share-url');
+shareUrlInput.value = url;
+shareUrlInput.style.display = 'block';
+try {
+  navigator.clipboard.writeText(url).then(function() {
+    /* clipboard successfully set */
+  }, function() {
+    /* clipboard write failed */
+  });
+} catch (e) {
+  // ignore
+}
+"))
+          (:input :type "text" :id "share-url" :style "display: none; width: 100%; margin-top: 10px;" :readonly "readonly")
           (:pre :style "font-size: 25px" (truth table))
           (:pre (format nil "Operators: ~a" inference:*valid-operators*)))
     (:p "Some notes: "
@@ -92,7 +117,10 @@
 
 (defmethod reblocks/page:init-page ((app truth-table) (url-path string) expire-at)
   (declare (ignorable app url-path expire-at))
-  (create-table *proposition*))
+  (let ((prop (get-parameter "prop")))
+    (create-table (if (or (null prop) (string= prop ""))
+                      *proposition*
+                      prop))))
 
 (defun start (&optional (port *port*))
   (reblocks/debug:on)
