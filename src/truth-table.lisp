@@ -203,11 +203,11 @@ a tautology."
   "A easy way to generate a truth table"
   `(print-truth-table (quote ,exp)))
 
-;; TODO: implement a pratt parser
-(defmacro truth-infix (exp)
+
+(defmacro truth-infix (&rest exp)
   "A easy and infix way of EXP generate a truth table.
    Ex.: (truth-infix (p ^ q)) "
-  `(print-truth-table (infix-to-prefix (quote , exp))))
+  `(print-truth-table (parse-logic (format nil "~a" (quote ,exp)))))
 
 
 (defun main ()
