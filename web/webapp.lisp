@@ -68,7 +68,10 @@ try {
 (defun truth-table (exp)
   (with-output-to-string (s)
     (let ((inference:*output-stream* s))
-      (inference:print-truth-table (inference:parse-logic exp)))))
+      (handler-case (inference:print-truth-table
+                     (inference:parse-logic exp))
+        (error (c)
+          (format s "ERROR: invalid logic expression"))))))
 
 (defun create-table (exp-string)
   (make-instance 'table
@@ -95,7 +98,7 @@ try {
                     :id "prop-input"
                     :style "text-align:center;"
                     :name "prop"
-                    :placeholder (prop table))
+                    :value (prop table))
             (:input :type "submit"
                     :value "Eval")
             (:input :type "button"
