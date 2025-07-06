@@ -29,10 +29,13 @@ docker-run: docker-build
 	docker run --rm -it --network=host $(DOCKER_IMG)
 
 docker-check: docker-build
-	docker run --rm -t --entrypoint=ros $(DOCKER_IMG) run -s lisp-inference/test -l run-test.lisp
+	docker run --rm -t --entrypoint=ros $(DOCKER_IMG) run -l run-test.lisp
 
 docker-publish: docker-build
 	docker tag $(DOCKER_IMG) $(PUBLIC_IMG)
 	docker push $(PUBLIC_IMG)
+
+deploy: docker-publish
+	ssh starfox bash /home/lerax/Deploy/logic.sh
 
 .PHONY: check docker-build

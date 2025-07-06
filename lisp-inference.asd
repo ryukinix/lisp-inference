@@ -38,12 +38,18 @@
   :pathname "web"
   :components ((:file "webapp")))
 
-(asdf:defsystem #:lisp-inference/test
-  :description "Lisp Inference Test Suit"
+(asdf:defsystem #:lisp-inference/tests
+  :description "Lisp Inference Tests"
   :author "Manoel Vilela <manoel_vilela@engineer.com>"
   :license "BSD"
   :version "0.2.0"
   :serial t
   :pathname "t"
   :depends-on (:lisp-inference :rove)
-  :components ((:file "test")))
+  :components ((:file "tests")
+               (:file "test-equivalence-rules")
+               (:file "test-inference-rules")
+               (:file "test-infix-parsing")
+               (:file "test-pratt"))
+  :perform (test-op (o c)
+                    (symbol-call :rove :run c)))

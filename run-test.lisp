@@ -1,6 +1,6 @@
 (load "fix-quicklisp")
-(ql:quickload :lisp-inference/test :silent t)
+(ql:quickload :lisp-inference/tests :silent t)
 (setf rove:*enable-colors* t)
-(if (rove:run* "lisp-inference/test")
+(if (rove:run :lisp-inference/tests)
     (sb-ext:exit :code 0)
     (sb-ext:exit :code 1))
