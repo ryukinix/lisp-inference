@@ -21,6 +21,10 @@ server:
 docker-build:
 	docker build -t $(DOCKER_IMG) .
 
+docker-shell: docker-build
+	docker run --rm -it --entrypoint=/bin/bash $(DOCKER_IMG)
+
+
 docker-run: docker-build
 	docker run --rm -it --network=host $(DOCKER_IMG)
 

@@ -29,8 +29,9 @@
   :version "0.2.0"
   :serial t
   :depends-on (:lisp-inference
-               :weblocks
-               :weblocks-ui
+               :40ants-routes ;; implicit dependency of reblocks
+               :reblocks
+               :reblocks-ui
                :clack-handler-hunchentoot
                :find-port
                :str)
@@ -44,7 +45,5 @@
   :version "0.2.0"
   :serial t
   :pathname "t"
-  :depends-on (:lisp-inference :prove)
-  :components ((:file "test"))
-  :perform (asdf:test-op :after (op c)
-                         (funcall (intern #.(string :run) :prove) c)))
+  :depends-on (:lisp-inference :rove)
+  :components ((:file "test")))

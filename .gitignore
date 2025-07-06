@@ -1,2 +1,3 @@
 *.fasl
 system-index.txt
+lisp-inference
