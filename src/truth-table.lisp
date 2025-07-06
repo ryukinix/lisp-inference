@@ -11,7 +11,8 @@
 (defun propositionp (symbol)
   "Check if the given SYMBOL can be a proposition (letters)"
   (and (atom symbol)
-       (not (valid-operatorp symbol))))
+       (not (valid-operatorp symbol))
+       (not (member (symbol-name symbol) '("T" "F") :test #'string-equal))))
 
 (defun set-of-propositions (exp)
   "Given a propositional expression EXP return the list of
@@ -91,6 +92,14 @@
         (t nil)))
 
 
+(defun replace-tf (exp)
+  (cond ((atom exp)
+         (cond ((string-equal (symbol-name exp) "T") t)
+               ((string-equal (symbol-name exp) "F") nil)
+               (t exp)))
+        (t (cons (replace-tf (car exp))
+                 (replace-tf (cdr exp))))))
+
 (defun eval-operations (exp-tree)
   "Generate all the truth-table cases and evaluated it based on EXP-TREE"
   (let ((cases (group-cases-to-propositions exp-tree)))
@@ -99,7 +108,7 @@
                  (let ((prop (car pair))
                        (value (cadr pair)))
                    (nsubst value prop exp)))
-               (eval exp)))
+               (eval (replace-tf exp))))
       (let ((exps (stack-of-expressions exp-tree)))
         (loop for case in cases
               collect (append case

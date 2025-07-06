@@ -33,3 +33,17 @@
     (ok (equal-expression '(~ (~ p))
                           'p)
         "EQUAL EXPRESSION 2")))
+
+(deftest truth-table-tests-with-false-and-true
+  (testing "== Truth-table tests with F and T as constant!"
+    (ok (equal (eval-expression '(^ p f))
+               "FF")
+        "CONTRADICTION: p ^ f")
+
+    (ok (equal (eval-expression '(v p t))
+               "TT")
+        "TAUTOLOGY: p v t")
+
+    (ok (equal (eval-expression (parse-logic "(~p v q <=> p => q) <=> t"))
+               "TTTT")
+        "TAUTOLOGY OF CONDITIONAL DEFINITION")))
