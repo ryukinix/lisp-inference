@@ -1,118 +1,115 @@
 (defpackage #:lisp-inference/test
   (:use #:cl
         #:lisp-inference
-        #:prove))
-
+        #:rove))
 
 (in-package :lisp-inference/test)
 
 
-(plan nil)
+(deftest inference-rules-test
+  (testing "== Inference rules!"
+    (ok (equal (modus-ponens '(^ (=> p q) p))
+               'q)
+        "Inference: MODUS-PONENS")
+
+    (ok (equal (modus-tollens '(^ (=> p q) (~ p)))
+               '(~ q))
+        "Inference: MODUS-TOLLENS")
+
+    (ok (equal (syllogism-disjunctive '(^ (v p q) (~ p)))
+               'q)
+        "Inference: SYLLOGISM-DISJUNCTIVE")
+
+    (ok (equal (syllogism-hypothetical '(^ (=> x y) (=> y z)))
+               '(=> X Z))
+        "Inference: SYLLOGISM-HYPOTHETICAL")
+
+    (ok (equal (addiction 'p 'q)
+               '(v p q))
+        "Inference: ADDICTION")
+
+    (ok (equal (conjunction '(=> p q) 'p)
+               '(^ (=> P Q) P))
+        "Inference: CONJUNCTION")
+
+    (ok (equal (absorption '(=> r (^ x y)))
+               '(=> R (^ R (^ X Y))))
+        "Inference: ABSORPTION")
+
+    (ok (equal (simplification-first '(^ p q))
+               'p)
+        "Inference: SIMPLIFICATION FIRST")
+
+    (ok (equal (simplification-second '(^ r s))
+               's)
+        "Inference: SIMPLIFICATION SECOND")))
 
 
-(diag "== Inference rules!")
+(deftest equivalence-rules-test
+  (testing "== Equivalence rules!"
+    (ok (equal (de-morgan '(^ p q))
+               '(~ (v (~ p) (~ q))))
+        "Equivalence: DE-MORGAN 1")
+    (ok (equal (de-morgan '(~ (v p q)))
+               '(^ (~ p) (~ q)))
+        "Equivalence: DE-MORGAN 2")
 
-(is (modus-ponens '(^ (=> p q) p))
-    'q
-    "Inference: MODUS-PONENS")
+    (ok (equal (de-morgan '(~ (^ (~ p) (~ q))))
+               '(v p q))
+        "Equivalence: DE-MORGAN 3")
 
-(is (modus-tollens '(^ (=> p q) (~ p)))
-    '(~ q)
-    "Inference: MODUS-TOLLENS")
+    (ok (equal (double-negation '(~ (~ p)))
+               'p)
+        "Equivalence: DOUBLE-NEGATION 1")
 
-(is (syllogism-disjunctive '(^ (v p q) (~ p)))
-    'q
-    "Inference: SYLLOGISM-DISJUNCTIVE")
-
-(is (syllogism-hypothetical '(^ (=> x y) (=> y z)))
-    '(=> X Z)
-    "Inference: SYLLOGISM-HYPOTHETICAL")
-
-(is (addiction 'p 'q)
-    '(v p q)
-    "Inference: ADDICTION")
-
-(is (conjunction '(=> p q) 'p)
-    '(^ (=> P Q) P)
-    "Inference: CONJUNCTION")
-
-(is (absorption '(=> r (^ x y)))
-    '(=> R (^ R (^ X Y)))
-    "Inference: ABSORPTION")
-(is (simplification-first '(^ p q))
-    'p
-    "Inference: SIMPLIFICATION FIRST")
-(is (simplification-second '(^ r s))
-    's
-    "Inference: SIMPLIFICATION SECOND")
+    (ok (equal (double-negation 'p)
+               'p)
+        "Equivalence: DOUBLE-NEGATION 2")))
 
 
-(diag "== Equivalence rules!")
+(deftest truth-table-tests
+  (testing "== Truth-table tests!"
+    (ok (equal (eval-expression '(^ p q))
+               "TFFF")
+        "AND OPERATION: p ^ q")
 
-(is (de-morgan '(^ p q))
-    '(~ (v (~ p) (~ q)))
-    "Equivalence: DE-MORGAN 1")
-(is (de-morgan '(~ (v p q)))
-    '(^ (~ p) (~ q))
-    "Equivalence: DE-MORGAN 2")
-(is (de-morgan '(~ (^ (~ p) (~ q))))
-    '(v p q)
-    "Equivalence: DE-MORGAN 3")
+    (ok (equal (eval-expression '(v p q))
+               "TTTF")
+        "OR OPERATION: p v q")
 
-(is (double-negation '(~ (~ p)))
-    'p
-    "Equivalence: DOUBLE-NEGATION 1")
+    (ok (equal (eval-expression '(=> p q))
+               "TFTT")
+        "CONDITIONAL OPERATION: p => q")
 
-(is (double-negation 'p)
-    'p
-    "Equivalence: DOUBLE-NEGATION 2")
+    (ok (equal (eval-expression '(<=> p q))
+               "TFFT")
+        "BICONDITIONAL OPERATION: p <=> q")
 
+    (ok (equal (eval-expression '([+] p q))
+               "FTTF")
+        "XOR OPERATION: p [+] q")
 
-(diag "== Truth-table tests!")
+    (ok (equal (eval-expression '(~ p))
+               "FT")
+        "NOT OPERATION: ~ p")
 
-(is (eval-expression '(^ p q))
-    "TFFF"
-    "AND OPERATION: p ^ q")
+    (ok (equal-expression '(^ p q)
+                          (de-morgan '(^ p q)))
+        "EQUAL EXPRESSION 1")
 
-(is (eval-expression '(v p q))
-    "TTTF"
-    "OR OPERATION: p v q")
+    (ok (equal-expression '(~ (~ p))
+                          'p)
+        "EQUAL EXPRESSION 2")))
 
-(is (eval-expression '(=> p q))
-    "TFTT"
-    "CONDITIONAL OPERATION: p => q")
+(deftest infix-parsing-test
+  (testing "== Infix Parsing"
+    (ok (equal (infix-to-prefix '(~ (p v q)))
+               '(~ (v p q))))
 
-(is (eval-expression '(<=> p q))
-    "TFFT"
-    "BICONDITIONAL OPERATION: p <=> q")
+    (ok (equal (infix-to-prefix '(p => q))
+               '(=> p q)))
 
-(is (eval-expression '([+] p q))
-    "FTTF"
-    "XOR OPERATION: p [+] q")
-
-(is (eval-expression '(~ p))
-    "FT"
-    "NOT OPERATION: ~ p")
-
-(ok (equal-expression '(^ p q)
-                      (de-morgan '(^ p q)))
-    "EQUAL EXPRESSION 1")
-
-(ok (equal-expression '(~ (~ p))
-                      '(p))
-    "EQUAL EXPRESSION 2")
-
-(diag "== Infix Parsing")
-
-(is (infix-to-prefix '(~ (p v q)))
-    '(~ (v p q)))
-
-(is (infix-to-prefix '(p => q))
-    '(=> p q))
-
-(is (infix-to-prefix '((p v q) <=> ((~ p) ^ (~ q))))
-    '(<=> (v p q)
-         (^ (~ p)
-            (~ q))))
-
-(finalize)
+    (ok (equal (infix-to-prefix '((p v q) <=> ((~ p) ^ (~ q))))
+               '(<=> (v p q)
+                    (^ (~ p)
+                       (~ q)))))))

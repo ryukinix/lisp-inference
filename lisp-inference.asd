@@ -45,7 +45,5 @@
   :version "0.2.0"
   :serial t
   :pathname "t"
-  :depends-on (:lisp-inference :prove)
-  :components ((:file "test"))
-  :perform (asdf:test-op :after (op c)
-                         (funcall (intern #.(string :run) :prove) c)))
+  :depends-on (:lisp-inference :rove)
+  :components ((:file "test")))
