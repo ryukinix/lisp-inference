@@ -48,7 +48,7 @@
 
 (defmacro js-share-button-function ()
   "
-var prop = document.getElementById('prop-input').value || document.getElementById('prop-input').placeholder;
+var prop = document.getElementById('prop-input').value
 var url = window.location.origin + window.location.pathname + '?prop=' + encodeURIComponent(prop);
 var shareUrlInput = document.getElementById('share-url');
 shareUrlInput.value = url;
@@ -64,6 +64,13 @@ try {
 }
 ")
 
+(defmacro js-eval-update-query-path ()
+  "
+const url = location.href.replace(location.search, '')
+// history.assign(url);
+history.pushState(null, '', url);
+"
+  )
 
 (defun truth-table (exp)
   (with-output-to-string (s)
@@ -93,7 +100,8 @@ try {
     (:h1 :align "center" "Lisp Inference Truth Table System")
     (:div :align "center"
           (reblocks-ui/form:with-html-form (:POST (lambda (&key prop &allow-other-keys)
-                                   (update-table table prop)))
+                                                    (update-table table prop))
+                                            :extra-submit-code (js-eval-update-query-path))
             (:input :type "text"
                     :id "prop-input"
                     :style "text-align:center;"
