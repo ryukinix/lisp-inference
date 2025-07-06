@@ -46,6 +46,25 @@
     :initform nil
     :accessor truth)))
 
+(defmacro js-share-button-function ()
+  "
+var prop = document.getElementById('prop-input').value || document.getElementById('prop-input').placeholder;
+var url = window.location.origin + window.location.pathname + '?prop=' + encodeURIComponent(prop);
+var shareUrlInput = document.getElementById('share-url');
+shareUrlInput.value = url;
+shareUrlInput.style.display = 'block';
+try {
+  navigator.clipboard.writeText(url).then(function() {
+    /* clipboard successfully set */
+  }, function() {
+    /* clipboard write failed */
+  });
+} catch (e) {
+  // ignore
+}
+")
+
+
 (defun truth-table (exp)
   (with-output-to-string (s)
     (let ((inference:*output-stream* s))
@@ -74,30 +93,16 @@
                                    (update-table table prop)))
             (:input :type "text"
                     :id "prop-input"
+                    :style "text-align:center;"
                     :name "prop"
                     :placeholder (prop table))
             (:input :type "submit"
                     :value "Eval")
             (:input :type "button"
                     :value "Share"
-                    :onclick "
-var prop = document.getElementById('prop-input').value || document.getElementById('prop-input').placeholder;
-var url = window.location.origin + window.location.pathname + '?prop=' + encodeURIComponent(prop);
-var shareUrlInput = document.getElementById('share-url');
-shareUrlInput.value = url;
-shareUrlInput.style.display = 'block';
-try {
-  navigator.clipboard.writeText(url).then(function() {
-    /* clipboard successfully set */
-  }, function() {
-    /* clipboard write failed */
-  });
-} catch (e) {
-  // ignore
-}
-"))
+                    :onclick (js-share-button-function)))
           (:input :type "text" :id "share-url" :style "display: none; width: 100%; margin-top: 10px;" :readonly "readonly")
-          (:pre :style "font-size: 25px" (truth table))
+          (:pre :style "font-size: 20px" (truth table))
           (:pre (format nil "Operators: ~a" inference:*valid-operators*)))
     (:p "Some notes: "
         (:ul

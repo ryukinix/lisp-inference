@@ -13,6 +13,11 @@
         #:lisp-inference
         #:rove))
 
+(defpackage #:lisp-inference/tests/test-truth-table
+  (:use #:cl
+        #:lisp-inference
+        #:rove))
+
 (defpackage #:lisp-inference/tests/test-pratt
   (:use #:cl
         #:lisp-inference
@@ -23,4 +28,5 @@
   (:import-from #:lisp-inference/tests/test-equivalence-rules)
   (:import-from #:lisp-inference/tests/test-inference-rules)
   (:import-from #:lisp-inference/tests/test-infix-parsing)
+  (:import-from #:lisp-inference/tests/test-truth-table)
   (:import-from #:lisp-inference/tests/test-pratt))

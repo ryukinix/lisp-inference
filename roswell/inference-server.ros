@@ -5,18 +5,17 @@ exec ros -Q -- $0 "$@"
 |#
 
 #+quicklisp
-(defun ensure-dist-installed-and-updated (dist nick)
+(defun ensure-dist-installed (dist nick)
   (let ((d (ql-dist:find-dist nick)))
-    (if (not (and d (ql-dist:installedp d)))
+    (when (not (and d (ql-dist:installedp d)))
         (ql-dist:install-dist dist
-                              :prompt nil))
-    (ql:update-dist nick :prompt nil)))
+                              :prompt nil))))
 
 (progn ;;init forms
   (ros:ensure-asdf)
   #+quicklisp
   (progn
-    (ensure-dist-installed-and-updated "http://dist.ultralisp.org" "ultralisp")
+    (ensure-dist-installed "http://dist.ultralisp.org" "ultralisp")
     (ql:quickload '(lisp-inference/web)))
   )
 

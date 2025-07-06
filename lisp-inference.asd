@@ -50,6 +50,7 @@
                (:file "test-equivalence-rules")
                (:file "test-inference-rules")
                (:file "test-infix-parsing")
+               (:file "test-truth-table")
                (:file "test-pratt"))
   :perform (test-op (o c)
                     (symbol-call :rove :run c)))
