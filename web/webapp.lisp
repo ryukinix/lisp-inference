@@ -126,7 +126,7 @@ history.pushState(null, '', url);
     (:br)
     (:span "Documentation: "
            (:a :href
-               "https://lerax.me/lisp-inference" "lerax.me/lisp-inference"))))
+               "https://manoel.dev/lisp-inference" "manoel.dev/lisp-inference"))))
 
 (defun render-note (string)
   (reblocks/html:with-html ()
