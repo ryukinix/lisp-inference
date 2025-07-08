@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/ryukinix/lisp-inference.svg?branch=master)](https://travis-ci.org/ryukinix/lisp-inference)
+[![CI](https://github.com/ryukinix/lisp-inference/actions/workflows/main.yml/badge.svg)](https://github.com/ryukinix/lisp-inference/actions/workflows/main.yml)
+[![Deploy](https://github.com/ryukinix/lisp-inference/actions/workflows/deploy.yml/badge.svg)](https://github.com/ryukinix/lisp-inference/actions/workflows/deploy.yml)
 
 # Lisp Inference
 
