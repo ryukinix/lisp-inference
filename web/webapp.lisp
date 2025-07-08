@@ -30,6 +30,7 @@
 (defvar *port* (find-port:find-port))
 (defvar *notes*
   '("Please, don't be evil. Use less than 10 variables."
+    "Use spaces around operators. Use 'p ^ q' instead 'p^q'."
     "Yes, [+] it's a XOR. Mathematically: p ⊕ q."
     "(=> ->) and (<=> <->) are aliases."))
 
