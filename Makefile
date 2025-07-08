@@ -18,9 +18,16 @@ check:
 server:
 	@$(SBCL_CMD) run-server.lisp
 
-docs:
-	rm -rf docs/ || true
+docs-worktree:
+	@if [ ! -d docs ]; then \
+		git worktree add docs gh-pages -f; \
+    fi
+
+docs: docs-worktree
 	@$(SBCL_CMD) run-docs.lisp
+
+docs-publish:
+	cd docs/ && git add . && git commit -m "Auto-generated commit from make docs-publish" && git push || true
 
 docker-build:
 	docker build -t $(DOCKER_IMG) .

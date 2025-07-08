@@ -9,6 +9,7 @@
   :author "Manoel Vilela <manoel_vilela@engineer.com>"
   :license "BSD"
   :version "0.4.0"
+  :homepage "https://github.com/ryukinix/lisp-inference"
   :serial t
   :pathname "src"
   :components ((:file "package")
@@ -27,6 +28,7 @@
   :author "Manoel Vilela <manoel_vilela@engineer.com>"
   :license "BSD"
   :version "0.4.0"
+  :homepage "https://github.com/ryukinix/lisp-inference"
   :serial t
   :depends-on (:lisp-inference
                :40ants-routes ;; implicit dependency of reblocks
@@ -43,6 +45,7 @@
   :author "Manoel Vilela <manoel_vilela@engineer.com>"
   :license "BSD"
   :version "0.4.0"
+  :homepage "https://github.com/ryukinix/lisp-inference"
   :serial t
   :pathname "t"
   :depends-on (:lisp-inference :rove)
