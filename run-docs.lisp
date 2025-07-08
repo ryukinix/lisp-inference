@@ -1,6 +1,6 @@
 (load "fix-quicklisp")
 ;; auto generate docs with staple
-(ql:quickload '(:staple :lisp-inference) :silent t)
+(ql:quickload '(:staple :lisp-inference :lisp-inference/tests :lisp-inference/web) :silent t)
 
 (staple:generate :lisp-inference :if-exists :overwrite)
 (format t "Docs generated at docs/ directory.~%")
