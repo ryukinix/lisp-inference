@@ -73,6 +73,7 @@
 
 ;; entrypoint
 (defun parse-logic (input)
+  "PARSE-LOGIC receive a INPUT as string and use a pratt parser to convert in infix notation"
   (setf *tokens* (tokenize input)
         *pos* 0)
   (parse-expression))

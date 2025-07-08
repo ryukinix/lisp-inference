@@ -18,15 +18,28 @@ check:
 server:
 	@$(SBCL_CMD) run-server.lisp
 
+docs-worktree:
+	@if [ ! -d docs ]; then \
+		git worktree add docs gh-pages -f; \
+    fi
+
+docs: docs-worktree
+	@$(SBCL_CMD) run-docs.lisp
+
+docs-publish:
+	cd docs/ && git add . && git commit -m "Auto-generated commit from make docs-publish" && git push || true
+
 docker-build:
 	docker build -t $(DOCKER_IMG) .
 
 docker-shell: docker-build
 	docker run --rm -it --entrypoint=/bin/bash $(DOCKER_IMG)
 
-
 docker-run: docker-build
 	docker run --rm -it --network=host $(DOCKER_IMG)
+
+docker-docs: docker-build docs-worktree
+	docker run --rm -t -v $(PWD)/docs:/root/.roswell/local-projects/local/lisp-inference/docs --entrypoint=ros $(DOCKER_IMG) run -l run-docs.lisp
 
 docker-check: docker-build
 	docker run --rm -t --entrypoint=ros $(DOCKER_IMG) run -l run-test.lisp
@@ -38,4 +51,4 @@ docker-publish: docker-build
 deploy: docker-publish
 	ssh starfox bash /home/lerax/Deploy/logic.sh
 
-.PHONY: check docker-build
+.PHONY: check docker-build docs

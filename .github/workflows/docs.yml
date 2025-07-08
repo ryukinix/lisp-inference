@@ -1,0 +1,19 @@
+name: Docs
+
+on: workflow_dispatch
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build docs using docker
+        run: make docker-docs
+
+      - name: Publish docs to gh-pages
+        run: make docs-publish
