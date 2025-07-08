@@ -35,9 +35,11 @@ docker-build:
 docker-shell: docker-build
 	docker run --rm -it --entrypoint=/bin/bash $(DOCKER_IMG)
 
-
 docker-run: docker-build
 	docker run --rm -it --network=host $(DOCKER_IMG)
+
+docker-docs: docker-build docs-worktree
+	docker run --rm -t -v $(PWD)/docs:/root/.roswell/local-projects/local/lisp-inference/docs --entrypoint=ros $(DOCKER_IMG) run -l run-docs.lisp
 
 docker-check: docker-build
 	docker run --rm -t --entrypoint=ros $(DOCKER_IMG) run -l run-test.lisp
