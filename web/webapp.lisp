@@ -28,6 +28,9 @@
 
 (defvar *proposition* "P => Q" "Default proposition")
 (defvar *port* (find-port:find-port))
+(defvar *tautologies*
+  '(("de morgan" . "~p v ~q <=> ~(p ^ q)")
+    ("implication" . "p => q <=> ~ p v q")))
 (defvar *notes*
   '("Please, don't be evil. Use less than 10 variables."
     "Use spaces around operators. Use 'p ^ q' instead 'p^q'."
@@ -97,39 +100,69 @@ history.pushState(null, '', url);
   (let ((url-prop (get-parameter "prop")))
     (when (and url-prop (string/= url-prop "") (string/= url-prop (prop table)))
       (update-table table url-prop)))
+  (with-html ()
+    (html-title)
+    (html-truth-table table)
+    (html-notes)
+    (html-tautologies)
+    (html-documentation)))
+
+(defun html-title ()
+  (with-html ()
+    (:h1 :align "center" "Lisp Inference Truth Table System")))
+
+(defun html-truth-table (table)
   (reblocks/html:with-html ()
-    (:h1 :align "center" "Lisp Inference Truth Table System")
     (:div :align "center"
-          (reblocks-ui/form:with-html-form (:POST (lambda (&key prop &allow-other-keys)
-                                                    (update-table table prop))
-                                            :extra-submit-code (js-eval-update-query-path))
-            (:input :type "text"
-                    :id "prop-input"
-                    :style "text-align:center;"
-                    :name "prop"
-                    :value (prop table))
-            (:input :type "submit"
-                    :value "Eval")
-            (:input :type "button"
-                    :value "Share"
-                    :onclick (js-share-button-function)))
-          (:input :type "text" :id "share-url" :style "display: none; width: 100%; margin-top: 10px;" :readonly "readonly")
-          (:pre :style "font-size: 20px" (truth table))
-          (:pre (format nil "Operators: ~a" inference:*valid-operators*)))
-    (:p "Some notes: "
-        (:ul
-         (loop for note in *notes*
-               do (:li (render-note note)))))
+     (with-html-form (:POST (lambda (&key prop &allow-other-keys)
+                              (update-table table prop))
+                       :extra-submit-code (js-eval-update-query-path))
+       (:input :type "text"
+        :id "prop-input"
+        :style "text-align:center;"
+        :name "prop"
+        :value (prop table))
+       (:input :type "submit"
+        :value "Eval")
+       (:input :type "button"
+        :value "Share"
+        :onclick (js-share-button-function)))
+     (:input :type "text"
+      :id "share-url"
+      :style "display: none; width: 100%; margin-top: 10px;"
+      :readonly "readonly")
+     (:pre :style "font-size: 20px" (truth table))
+     (:pre (format nil "Operators: ~a" inference:*valid-operators*)))
+    (:br)))
+
+(defun html-documentation ()
+  (with-html ()
     (:span "Source: "
-           (:a :href "https://github.com/ryukinix/lisp-inference"
-               "ryukinix/lisp-inference"))
+     (:a :href "https://github.com/ryukinix/lisp-inference"
+      "ryukinix/lisp-inference"))
     (:br)
     (:span "Documentation: "
-           (:a :href
-               "https://manoel.dev/lisp-inference" "manoel.dev/lisp-inference"))))
+     (:a :href
+      "https://manoel.dev/lisp-inference" "manoel.dev/lisp-inference"))))
 
-(defun render-note (string)
-  (reblocks/html:with-html ()
+(defun html-tautologies ()
+  (with-html ()
+    (:p "Tautologies: "
+     (:ul
+      (loop for (tautology . exp) in *tautologies*
+            for text := (format nil "~a: ~a" tautology exp)
+            do (:li (:pre text)))))))
+
+
+(defun html-notes ()
+  (with-html ()
+    (:p "Some notes: "
+     (:ul
+      (loop for note in *notes*
+            do (:li (:pre note)))))))
+
+(defun html-render-note (string)
+  (with-html ()
     (:pre string)))
 
 (defmethod reblocks/page:init-page ((app truth-table) (url-path string) expire-at)
