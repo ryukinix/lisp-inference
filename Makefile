@@ -18,6 +18,10 @@ check:
 server:
 	@$(SBCL_CMD) run-server.lisp
 
+docs:
+	rm -rf docs/ || true
+	@$(SBCL_CMD) run-docs.lisp
+
 docker-build:
 	docker build -t $(DOCKER_IMG) .
 
@@ -38,4 +42,4 @@ docker-publish: docker-build
 deploy: docker-publish
 	ssh starfox bash /home/lerax/Deploy/logic.sh
 
-.PHONY: check docker-build
+.PHONY: check docker-build docs
