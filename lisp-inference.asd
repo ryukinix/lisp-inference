@@ -8,7 +8,7 @@
   :description "An Inference Engine using Propositional Calculus"
   :author "Manoel Vilela <manoel_vilela@engineer.com>"
   :license "BSD"
-  :version "0.2.0"
+  :version "0.4.0"
   :serial t
   :pathname "src"
   :components ((:file "package")
@@ -26,7 +26,7 @@
   :description "An web interface for Lisp Inference Truth Table"
   :author "Manoel Vilela <manoel_vilela@engineer.com>"
   :license "BSD"
-  :version "0.2.0"
+  :version "0.4.0"
   :serial t
   :depends-on (:lisp-inference
                :40ants-routes ;; implicit dependency of reblocks
@@ -42,7 +42,7 @@
   :description "Lisp Inference Tests"
   :author "Manoel Vilela <manoel_vilela@engineer.com>"
   :license "BSD"
-  :version "0.2.0"
+  :version "0.4.0"
   :serial t
   :pathname "t"
   :depends-on (:lisp-inference :rove)
