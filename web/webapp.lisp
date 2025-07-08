@@ -30,7 +30,11 @@
 (defvar *port* (find-port:find-port))
 (defvar *tautologies*
   '(("de morgan" . "~p v ~q <=> ~(p ^ q)")
-    ("implication" . "p => q <=> ~ p v q")))
+    ("modus ponens" . "p ^ (p -> q) => q")
+    ("constructive dilemma" . "((p -> q) ^ (r -> s) ^ (p v r)) => (q v s)")
+    ("hypothetical syllogism" . "((p -> q) ^ (q -> r)) => (p -> r)")
+    ("disjunctive syllogism" . "((p v q) ^ ~p) => q")
+    ("implication" . "p -> q <=> ~ p v q")))
 (defvar *notes*
   '("Please, don't be evil. Use less than 10 variables."
     "Use spaces around operators. Use 'p ^ q' instead 'p^q'."
@@ -151,7 +155,10 @@ history.pushState(null, '', url);
      (:ul
       (loop for (tautology . exp) in *tautologies*
             for text := (format nil "~a: ~a" tautology exp)
-            do (:li (:pre text)))))))
+            collect (:li
+                (:a :href
+                 (format nil "/?prop=~a" (quri:url-encode exp))
+                 (:pre text))))))))
 
 
 (defun html-notes ()
@@ -159,7 +166,7 @@ history.pushState(null, '', url);
     (:p "Some notes: "
      (:ul
       (loop for note in *notes*
-            do (:li (:pre note)))))))
+            collect (:li (:pre note)))))))
 
 (defun html-render-note (string)
   (with-html ()
