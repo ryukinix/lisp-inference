@@ -216,7 +216,7 @@ a tautology."
          (n-propositions (length propositions)))
     (when (> n-propositions *max-propositions*)
       (error 'simple-error
-             :format-control "error: you was evil! D: Too many propositions: n=~a > max=~a"
+             :format-control "error: you were evil! D: Too many propositions: n=~a > max=~a"
              :format-arguments (list n-propositions *max-propositions*)))))
 
 (defmacro truth (exp)
