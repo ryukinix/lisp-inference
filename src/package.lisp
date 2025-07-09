@@ -29,6 +29,7 @@
            #:implicationp
            #:biconditionalp
            #:~            ;; operators
+           #:*valid-operators*
            #:^
            #:v
            #:=>
@@ -43,11 +44,11 @@
            #:prefix-to-infix
            #:infix-to-prefix
            #:print-truth-table ;; truth-table.lisp
+           #:*max-propositions*
            #:eval-expression
            #:equal-expression
            #:truth
            #:truth-infix
            #:*output-stream*
-           #:*valid-operators*
            #:main)
   (:nicknames "INFERENCE"))
