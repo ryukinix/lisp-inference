@@ -53,3 +53,8 @@
                    (print-truth-table '(^ (=> p q) r)))
                'simple-error)
         "Raise a error when there is more propositions than specified at *MAX-PROPOSITIONS*"))
+
+
+(deftest truth-table-without-duplicated-stack-of-expressions
+  (ok (equal (inference::stack-of-expressions '(^ (~ p) (~ p)))
+             '((~ p) (^ (~ p) (~ p))))))

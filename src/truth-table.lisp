@@ -75,7 +75,7 @@
 ;; the function is O(2^n) time, so I think is not a good idea put inside of it.
 
 ;; RECURSIVE BOMB, BE CAREFUL
-(defun stack-of-expressions (exp)
+(defun %stack-of-expressions (exp)
   "Based on propositional EXP generate a stack of expressions
    to be evaluated on truth-table generation"
   (cond ((and (valid-operationp exp)
@@ -93,6 +93,8 @@
            expressions))
         (t nil)))
 
+(defun stack-of-expressions (exp)
+  (remove-duplicates (%stack-of-expressions exp) :test #'equal))
 
 (defun replace-tf (exp)
   (cond ((atom exp)
