@@ -1,8 +1,5 @@
-FROM commonlispbr/roswell
+FROM commonlispbr/reblocks:latest
 WORKDIR /app
-RUN ros install commonlispbr/quicksys
-RUN ros run -s quicksys -e "(qs:install-dist :ultralisp)" -q
-RUN ros run -s 40ants-routes -s reblocks -s reblocks-ui -q
 COPY roswell roswell
 COPY web web
 COPY t t
