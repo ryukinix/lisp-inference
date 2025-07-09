@@ -7,6 +7,7 @@
   (:use #:cl #:cl-user)
   (:export #:double-negation ;; equivalences
            #:de-morgan
+           #:implication
            #:modus-ponens    ;; inferences
            #:modus-tollens
            #:syllogism-disjunctive
@@ -33,7 +34,9 @@
            #:^
            #:v
            #:=>
+           #:->
            #:<=>
+           #:<->
            #:[+]
            #:make-conjunction
            #:make-negation
