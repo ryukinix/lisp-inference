@@ -163,7 +163,7 @@ history.pushState(null, '', url);
             collect (:li
                 (:a :href
                  (format nil "/?prop=~a" (quri:url-encode exp))
-                 (:pre text))))))))
+                 text)))))))
 
 
 (defun html-notes ()
