@@ -10,7 +10,7 @@
            #:modus-ponens    ;; inferences
            #:modus-tollens
            #:syllogism-disjunctive
-           #:addiction
+           #:addition
            #:conjunction
            #:simplification-first
            #:simplification-second
