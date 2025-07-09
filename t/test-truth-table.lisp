@@ -47,3 +47,9 @@
     (ok (equal (eval-expression (parse-logic "(~p v q <=> p => q) <=> t"))
                "TTTT")
         "TAUTOLOGY OF CONDITIONAL DEFINITION")))
+
+(deftest truth-table-tests-with-too-many-vars
+    (ok (signals (let ((*max-propositions* 2))
+                   (print-truth-table '(^ (=> p q) r)))
+               'simple-error)
+        "Raise a error when there is more propositions than specified at *MAX-PROPOSITIONS*"))

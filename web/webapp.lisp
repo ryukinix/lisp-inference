@@ -85,8 +85,13 @@ history.pushState(null, '', url);
     (let ((inference:*output-stream* s))
       (handler-case (inference:print-truth-table
                      (inference:parse-logic exp))
+        (simple-error (c)
+          (apply #'format s
+                 (simple-condition-format-control c)
+                 (simple-condition-format-arguments c)))
         (error (c)
-          (format s "ERROR: invalid logic expression"))))))
+          (declare (ignore c))
+          (format s "error: invalid logic expression!"))))))
 
 (defun create-table (exp-string)
   (make-instance 'table

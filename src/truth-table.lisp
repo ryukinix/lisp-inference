@@ -5,13 +5,15 @@
 
 (defparameter *truth-string* "T")
 (defparameter *false-string* "F")
+(defparameter *max-propositions* 10
+  "Max number of propositions to generate truth table, more than this will generate a program-error.")
 (defparameter *output-stream* *standard-output*
   "Default stream to write the results")
 
 (defun propositionp (symbol)
   "Check if the given SYMBOL can be a proposition (letters)"
   (and (atom symbol)
-       (not (valid-operatorp symbol))
+       (not (valid-operatorp (intern-symbol symbol)))
        (not (member (symbol-name symbol) '("T" "F") :test #'string-equal))))
 
 (defun set-of-propositions (exp)
@@ -178,6 +180,7 @@ a tautology."
 (defun print-truth-table (exp)
   "Given a EXP with prefixed notation generate
    a pretty truth-table for each grouped case."
+  (raise-error-if-there-is-too-many-props exp)
   (let* ((evaluated-cases (eval-operations (lookup-internal-operators exp)))
          (truth-table (prepare-table evaluated-cases))
          (header (loop for column in truth-table collect (car column)))
@@ -208,13 +211,21 @@ a tautology."
                (princ-n #\newline)))
     (print-bar spaces)))
 
+(defun raise-error-if-there-is-too-many-props (exp)
+  (let* ((propositions (set-of-propositions exp))
+         (n-propositions (length propositions)))
+    (when (> n-propositions *max-propositions*)
+      (error 'simple-error
+             :format-control "error: you was evil! D: Too many propositions: n=~a > max=~a"
+             :format-arguments (list n-propositions *max-propositions*)))))
+
 (defmacro truth (exp)
-  "A easy way to generate a truth table"
+  "An easy way to generate a truth table"
   `(print-truth-table (quote ,exp)))
 
 
 (defmacro truth-infix (&rest exp)
-  "A easy and infix way of EXP generate a truth table.
+  "An easy and infix way of EXP generate a truth table.
    Ex.: (truth-infix (p ^ q)) "
   `(print-truth-table (parse-logic (format nil "~a" (quote ,exp)))))
 
