@@ -76,12 +76,14 @@
 (defun implicationp (exp)
   "Verify if the expression is an implication"
   (and (binary-operationp exp)
-       (operationp exp '=>)))
+       (or (operationp exp '=>)
+           (operationp exp '->))))
 
 (defun biconditionalp (exp)
   "Verify if the expression is a biconditional"
   (and (binary-operationp exp)
-       (operationp exp '<=>)))
+       (or (operationp exp '<=>)
+           (operationp exp '<->))))
 
 (defun swap-operand-operator (exp)
   (if (and (listp exp)

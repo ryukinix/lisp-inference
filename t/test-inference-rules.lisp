@@ -19,9 +19,9 @@
                '(=> X Z))
         "Inference: SYLLOGISM-HYPOTHETICAL")
 
-    (ok (equal (addiction 'p 'q)
+    (ok (equal (addition 'p 'q)
                '(v p q))
-        "Inference: ADDICTION")
+        "Inference: ADDITION")
 
     (ok (equal (conjunction '(=> p q) 'p)
                '(^ (=> P Q) P))

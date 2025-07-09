@@ -49,3 +49,11 @@
           (make-negation (make-conjunction (make-negation (first-operand exp))
                                            (make-negation (second-operand exp)))))
          (t exp))))
+
+(defun implication (exp)
+  "Implication equivalence ::
+  (=> p q) <=> (v (~ p) q)"
+  (if (implicationp exp)
+      (make-disjunction (make-negation (first-operand exp))
+                        (second-operand exp))
+      exp))

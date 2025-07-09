@@ -42,8 +42,8 @@
                       (operands (first-operand exp))))
       exp))
 
-(defun addiction (exp p)
-  "Addiction in inference rule ::
+(defun addition (exp p)
+  "Addition in inference rule ::
    p => (v p q)"
   (make-disjunction exp p))
 
