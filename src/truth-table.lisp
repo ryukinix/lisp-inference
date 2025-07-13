@@ -179,6 +179,12 @@ a tautology."
   (equal (eval-expression exp1)
          (eval-expression exp2)))
 
+(defun generate-printable-header (header)
+  (let ((*print-pretty* nil))
+    (loop for x in header
+          for p = (princ-to-string x)
+          collect (concatenate 'string "  " p "  |"))))
+
 (defun print-truth-table (exp)
   "Given a EXP with prefixed notation generate
    a pretty truth-table for each grouped case."
@@ -187,9 +193,7 @@ a tautology."
          (truth-table (prepare-table evaluated-cases))
          (header (loop for column in truth-table collect (car column)))
          (n-values (length (cadr truth-table)))
-         (printable-header (loop for x in header
-                                 for p = (princ-to-string x)
-                                 collect (concatenate 'string "  " p "  |")))
+         (printable-header (generate-printable-header header))
          (spaces (mapcar #'length printable-header)))
     (print-bar spaces)
     (princ-n "|")
