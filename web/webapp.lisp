@@ -57,7 +57,7 @@
 (defmacro js-share-button-function ()
   "
 
-// encode paranthesis as well to increase link-parsing compatibility in x.com and other platforms
+// encode parentheses as well to increase link-parsing compatibility in x.com and other platforms
 function strictEncodeURIComponent(str) {
   return encodeURIComponent(str)
     .replaceAll('(', '%28')
