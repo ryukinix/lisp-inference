@@ -56,8 +56,16 @@
 
 (defmacro js-share-button-function ()
   "
+
+// encode parentheses as well to increase link-parsing compatibility in x.com and other platforms
+function strictEncodeURIComponent(str) {
+  return encodeURIComponent(str)
+    .replaceAll('(', '%28')
+    .replaceAll(')', '%29');
+}
+
 var prop = document.getElementById('prop-input').value
-var url = window.location.origin + window.location.pathname + '?prop=' + encodeURIComponent(prop);
+var url = window.location.origin + window.location.pathname + '?prop=' + strictEncodeURIComponent(prop);
 var shareUrlInput = document.getElementById('share-url');
 shareUrlInput.value = url;
 shareUrlInput.style.display = 'block';
