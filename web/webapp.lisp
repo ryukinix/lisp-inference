@@ -146,7 +146,7 @@ history.pushState(null, '', url);
         :onclick (js-share-button-function)))
      (:input :type "text"
       :id "share-url"
-      :style "display: none; width: 100%; margin-top: 10px;"
+      :style "cursor: text; display: none; width: 100%; margin-top: 10px;"
       :readonly "readonly")
      (:pre :style "font-size: 20px" (truth table))
      (:pre (format nil "Operators: ~a" inference:*valid-operators*)))
