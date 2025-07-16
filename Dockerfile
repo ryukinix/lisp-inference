@@ -9,4 +9,4 @@ COPY *.lisp .
 RUN ros install ./lisp-inference.asd
 RUN ros run -s lisp-inference/web -q
 EXPOSE 40000
-ENTRYPOINT ["/root/.roswell/bin/inference-server"]
+ENTRYPOINT ["/app/roswell/inference-server.ros"]
