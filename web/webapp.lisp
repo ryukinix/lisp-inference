@@ -95,11 +95,13 @@ history.pushState(null, '', url);
       (handler-case (inference:print-truth-table
                      (inference:parse-logic exp))
         (simple-error (c)
+          (log:warn "Maximum variables reached in expression '~a' generated the error: ~a"  exp c)
           (apply #'format s
                  (simple-condition-format-control c)
                  (simple-condition-format-arguments c)))
         (error (c)
           (declare (ignore c))
+          (log:error "Invalid expression: '~a' generated the error: ~a"  exp c)
           (format s "error: invalid logic expression!"))))))
 
 (defun create-table (exp-string)
