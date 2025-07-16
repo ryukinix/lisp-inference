@@ -91,6 +91,7 @@ history.pushState(null, '', url);
 (defun truth-table (exp)
   (with-output-to-string (s)
     (let ((inference:*output-stream* s))
+      (log:info "expression: ~a" exp)
       (handler-case (inference:print-truth-table
                      (inference:parse-logic exp))
         (simple-error (c)
@@ -192,8 +193,10 @@ history.pushState(null, '', url);
                       *proposition*
                       prop))))
 
-(defun start (&optional (port *port*))
-  (reblocks/debug:on)
+(defun start (&key (port *port*) (debug t))
+  (if debug
+      (reblocks/debug:on)
+      (40ants-logging:setup-for-cli :level :info))
   (reblocks/server:stop)
   (reblocks/server:start :port port))
 
