@@ -5,7 +5,7 @@ COPY web web
 COPY t t
 COPY src src
 COPY lisp-inference.asd .
-COPY *.lisp .
+COPY scripts scripts
 RUN ros install ./lisp-inference.asd
 RUN ros run -s lisp-inference/web -q
 EXPOSE 40000

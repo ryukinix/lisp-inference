@@ -1,4 +1,3 @@
-(load "fix-quicklisp")
 (ql:quickload :lisp-inference/tests :silent t)
 
 (defun rove/utils/reporter::print-source-location-as-file-path (stream file line column)

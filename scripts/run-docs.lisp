@@ -1,4 +1,3 @@
-(load "fix-quicklisp")
 ;; auto generate docs with staple
 (ql:quickload '(:staple :lisp-inference :lisp-inference/tests :lisp-inference/web) :silent t)
 
