@@ -1,10 +1,21 @@
 ;; -*- mode: lisp  -*-
 ;; Manoel Vilela
 
+
 ;;;; lisp-inference.asd
 
+(defpackage :lisp-inference/system
+  (:use :cl :uiop :asdf))
 
-(asdf:defsystem #:lisp-inference
+(in-package :lisp-inference/system)
+
+(defun get-all-test-files ()
+  (mapcar #'(lambda (p) (list :file (pathname-name p)))
+          (directory-files (system-relative-pathname :lisp-inference "t/")
+                           "*test*.lisp")))
+
+
+(defsystem #:lisp-inference
   :description "An Inference Engine using Propositional Calculus"
   :author "Manoel Vilela <manoel_vilela@engineer.com>"
   :license "BSD"
@@ -23,7 +34,7 @@
                (:file "truth-table"
                 :depends-on ("pratt" "parser" "operators" "equivalences"))))
 
-(asdf:defsystem #:lisp-inference/web
+(defsystem #:lisp-inference/web
   :description "An web interface for Lisp Inference Truth Table"
   :author "Manoel Vilela <manoel_vilela@engineer.com>"
   :license "BSD"
@@ -41,20 +52,15 @@
   :pathname "web"
   :components ((:file "webapp")))
 
-(asdf:defsystem #:lisp-inference/tests
+(defsystem #:lisp-inference/tests
   :description "Lisp Inference Tests"
   :author "Manoel Vilela <manoel_vilela@engineer.com>"
   :license "BSD"
   :version "0.4.0"
   :homepage "https://github.com/ryukinix/lisp-inference"
   :serial t
-  :pathname "t"
   :depends-on (:lisp-inference :rove)
-  :components ((:file "tests")
-               (:file "test-equivalence-rules")
-               (:file "test-inference-rules")
-               (:file "test-infix-parsing")
-               (:file "test-truth-table")
-               (:file "test-pratt"))
+  :pathname "t"
+  :components #.(get-all-test-files)
   :perform (test-op (o c)
                     (symbol-call :rove :run c)))
