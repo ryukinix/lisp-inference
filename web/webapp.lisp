@@ -91,14 +91,17 @@ history.pushState(null, '', url);
 (defun truth-table (exp)
   (with-output-to-string (s)
     (let ((inference:*output-stream* s))
+      (log:info "expression: ~a" exp)
       (handler-case (inference:print-truth-table
                      (inference:parse-logic exp))
         (simple-error (c)
+          (log:warn "Maximum variables reached in expression '~a' generated the error: ~a"  exp c)
           (apply #'format s
                  (simple-condition-format-control c)
                  (simple-condition-format-arguments c)))
         (error (c)
           (declare (ignore c))
+          (log:error "Invalid expression: '~a' generated the error: ~a"  exp c)
           (format s "error: invalid logic expression!"))))))
 
 (defun create-table (exp-string)
@@ -192,8 +195,10 @@ history.pushState(null, '', url);
                       *proposition*
                       prop))))
 
-(defun start (&optional (port *port*))
-  (reblocks/debug:on)
+(defun start (&key (port *port*) (debug t))
+  (if debug
+      (reblocks/debug:on)
+      (40ants-logging:setup-for-cli :level :info))
   (reblocks/server:stop)
   (reblocks/server:start :port port))
 

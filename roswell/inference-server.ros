@@ -32,10 +32,10 @@ exec ros -Q -- $0 "$@"
   (unwind-protect
        (handler-case
            (progn
-             (format t "[+] Starting Lisp Inference server...~%")
-             (lisp-inference/web:start *port*)
-             (format t "[+] http://127.0.0.1:~a~%" *port*)
-             (format t "[+] Press C-c to kill Lisp Inference server...~%")
+             (lisp-inference/web:start :port *port* :debug nil)
+             (log:info "[+] Starting Lisp Inference server...")
+             (log:info "[+] http://127.0.0.1:~a" *port*)
+             (log:info "[+] Press C-c to kill Lisp Inference server...")
              (loop do (sleep 10)))
          (#+sbcl sb-sys:interactive-interrupt
           #+ccl  ccl:interrupt-signal-condition

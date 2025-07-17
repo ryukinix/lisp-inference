@@ -31,6 +31,7 @@
   :homepage "https://github.com/ryukinix/lisp-inference"
   :serial t
   :depends-on (:lisp-inference
+               :40ants-logging
                :40ants-routes ;; implicit dependency of reblocks
                :reblocks
                :reblocks-ui
