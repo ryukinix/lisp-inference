@@ -1,3 +1,8 @@
+(defpackage #:lisp-inference/tests/test-infix-parsing
+  (:use #:cl
+        #:lisp-inference
+        #:rove))
+
 (in-package #:lisp-inference/tests/test-infix-parsing)
 
 ;; deprecated in favor of pratt parser

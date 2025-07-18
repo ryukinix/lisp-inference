@@ -1,3 +1,9 @@
+(defpackage #:lisp-inference/tests/test-truth-table
+  (:use #:cl
+        #:lisp-inference
+        #:rove))
+
+
 (in-package :lisp-inference/tests/test-truth-table)
 
 (deftest truth-table-tests

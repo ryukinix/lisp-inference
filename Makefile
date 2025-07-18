@@ -1,4 +1,4 @@
-SBCL_CMD := sbcl --noinform --disable-debugger --load
+SBCL_CMD := sbcl --noinform --disable-debugger --load scripts/fix-quicklisp.lisp --load
 OBJECTS := lisp-inference
 DOCKER_IMG = lisp-inference
 VERSION := latest
@@ -8,15 +8,15 @@ all: $(OBJECTS)
 
 
 $(OBJECTS): src/*.lisp
-	$(SBCL_CMD) build.lisp
+	$(SBCL_CMD) scripts/build.lisp
 
 
 check:
-	@$(SBCL_CMD) run-test.lisp
+	@$(SBCL_CMD) scripts/run-test.lisp
 
 
 server:
-	@$(SBCL_CMD) run-server.lisp
+	@$(SBCL_CMD) scripts/run-server.lisp
 
 docs-worktree:
 	@if [ ! -d docs ]; then \
@@ -24,7 +24,7 @@ docs-worktree:
     fi
 
 docs: docs-worktree
-	@$(SBCL_CMD) run-docs.lisp
+	@$(SBCL_CMD) scripts/run-docs.lisp
 
 docs-publish:
 	cd docs/ && git add . && git commit -m "Auto-generated commit from make docs-publish" && git push || true
@@ -39,10 +39,13 @@ docker-run: docker-build
 	docker run --rm -it --network=host $(DOCKER_IMG)
 
 docker-docs: docker-build docs-worktree
-	docker run --rm -t -v $(PWD)/docs:/root/.roswell/local-projects/local/lisp-inference/docs --entrypoint=ros $(DOCKER_IMG) run -l run-docs.lisp
+	docker run --rm -t \
+		   -v $(PWD)/docs:/root/.roswell/local-projects/local/lisp-inference/docs \
+           --entrypoint=ros $(DOCKER_IMG) \
+           run -l scripts/fix-quicklisp.lisp -l run-docs.lisp
 
 docker-check: docker-build
-	docker run --rm -t --entrypoint=ros $(DOCKER_IMG) run -l run-test.lisp
+	docker run --rm -t --entrypoint=ros $(DOCKER_IMG) run -l scripts/fix-quicklisp.lisp -l scripts/run-test.lisp
 
 docker-publish: docker-build
 	docker tag $(DOCKER_IMG) $(PUBLIC_IMG)

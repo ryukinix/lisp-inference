@@ -1,3 +1,9 @@
+(defpackage #:lisp-inference/tests/test-pratt
+  (:use #:cl
+        #:lisp-inference
+        #:rove))
+
+
 (in-package #:lisp-inference/tests/test-pratt)
 
 (deftest test-pratt

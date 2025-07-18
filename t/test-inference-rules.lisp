@@ -1,3 +1,8 @@
+(defpackage #:lisp-inference/tests/test-inference-rules
+  (:use #:cl
+        #:lisp-inference
+        #:rove))
+
 (in-package #:lisp-inference/tests/test-inference-rules)
 
 

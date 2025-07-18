@@ -1,4 +1,3 @@
-(load "fix-quicklisp")
 (ql:quickload :prove)
 (ql:quickload :lisp-inference)
 (in-package :lisp-inference)
