@@ -26,7 +26,8 @@ cat > "$APPDIR/lisp-inference.desktop" <<EOL
 [Desktop Entry]
 Name=lisp-inference
 Exec=AppRun
-Icon=lisp-inference
+Icon=computer-symbolic
+Terminal=true
 Type=Application
 Categories=Utility;
 EOL
@@ -40,8 +41,8 @@ EOL
 chmod +x "$APPDIR/AppRun"
 
 # Copy the binary and icon
-cp ./lisp-inference "$APPDIR/usr/bin/"
-cp ./lisp-inference.png "$APPDIR/lisp-inference.png"
+cp -v ./lisp-inference "$APPDIR/usr/bin/"
+cp -v /usr/share/icons/Adwaita/scalable/devices/computer-symbolic.svg "$APPDIR/"
 
 # Run appimagetool
 "$APPIMAGE_TOOL_PATH" "$APPDIR"
