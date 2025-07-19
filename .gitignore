@@ -2,3 +2,5 @@
 system-index.txt
 lisp-inference
 docs/
+*.AppImage
+*.AppDir
