@@ -1,13 +1,9 @@
 SBCL_CMD := sbcl --noinform --disable-debugger --load scripts/fix-quicklisp.lisp --load
-OBJECTS := lisp-inference
 DOCKER_IMG = lisp-inference
 VERSION := latest
 PUBLIC_IMG = ryukinix/$(DOCKER_IMG):$(VERSION)
 
-all: $(OBJECTS)
-
-
-$(OBJECTS): src/*.lisp
+lisp-inference: src/*.lisp
 	$(SBCL_CMD) scripts/build.lisp
 
 
@@ -54,4 +50,7 @@ docker-publish: docker-build
 deploy: docker-publish
 	ssh starfox bash /home/lerax/Deploy/logic.sh
 
-.PHONY: check docker-build docs
+appimage: lisp-inference
+	bash scripts/appimage.sh
+
+.PHONY: check docker-build docs appimage
