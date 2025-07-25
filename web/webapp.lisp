@@ -91,7 +91,8 @@ history.pushState(null, '', url);
 (defun truth-table (exp)
   (with-output-to-string (s)
     (let ((inference:*output-stream* s))
-      (log:info "expression: ~a" exp)
+      (unless (equal *proposition* exp)
+       (log:info "expression: ~a" exp))
       (handler-case (inference:print-truth-table
                      (inference:parse-logic exp))
         (simple-error (c)
