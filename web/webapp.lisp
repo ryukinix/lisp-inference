@@ -201,7 +201,7 @@ history.pushState(null, '', url);
       (reblocks/debug:on)
       (40ants-logging:setup-for-cli :level :info))
   (reblocks/server:stop)
-  (reblocks/server:start :port port))
+  (reblocks/server:start :interface "0.0.0.0" :port port))
 
 (defun stop ()
   (reblocks/server:stop))
